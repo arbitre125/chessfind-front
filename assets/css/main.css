@@ -1,0 +1,55 @@
+:root {
+    /* Fonts */
+    --font-primary: 'sans-serif';
+
+    /* Spaces */
+    --space-xxs: 4px;
+    --space-xs:  8px;
+    --space-sm:  12px;
+    --space-md:  20px;
+    --space-lg:  32px;
+    --space-xl:  40px;
+    --space-xxl: 80px;
+
+    /* Breakpoints */
+    --breakpoint-desktop: 1224px;
+    --breakpoint-tablet: 768px;
+
+    /* Colors */
+    --color-primary: #2600C0;
+    --color-black-dark: #222222;
+    --color-black-light: #303030;
+    --color-grey-light: #cacaca;
+    --color-grey-dark: #a0a0a0;
+    --color-white: #ffffff;
+
+    /* Components */
+    --color-text-header: var(--color-black-dark);
+    --color-text-body: var(--color-black-light);
+    --color-border: var(--color-grey-light);
+    --color-border-hover: var(--color-grey-dark);
+}
+
+html {
+    font-family: var(--font-primary), sans-serif;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.content-container {
+    width: 900px;
+    max-width: 100%;
+    padding: 8px 20px;
+    margin: 0 auto;
+}
