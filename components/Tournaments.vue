@@ -30,6 +30,12 @@ export default {
             searchInput: ''
         }
     },
+    async fetch() {
+        const urlAPI = 'https://chessfind-api.vercel.app/tournaments'
+        const APItournaments = await fetch(urlAPI).then((res) => res.json())
+        this.total = APItournaments.total
+        this.tournaments = APItournaments.tournaments
+    },
     computed: {
         filteredTournaments() {
             return this.tournaments.filter((t) => {
@@ -46,13 +52,6 @@ export default {
         updateInput(value) {
             this.searchInput = value
         }
-    },
-    async fetch() {
-        const APItournaments = await fetch(
-            'http://127.0.0.1:8000/tournaments'
-        ).then((res) => res.json())
-        this.total = APItournaments.total
-        this.tournaments = APItournaments.tournaments
     }
 }
 </script>
