@@ -31,7 +31,6 @@ export default {
         }
     },
     async fetch() {
-        console.log('urlAPI: ', this.$config.apiURL)
         const urlAPI = this.$config.apiURL
         const APItournaments = await fetch(urlAPI).then((res) => res.json())
         this.total = APItournaments.total
