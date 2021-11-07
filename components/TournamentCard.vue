@@ -11,8 +11,8 @@
                     <img :src="getFlag" class="tournament-flag" />
                     {{ tournament.fed }}
                 </span>
-                <span class="tournament-city">
-                    <IconLocation v-if="tournament.city" class="icon" />
+                <span v-if="tournament.city" class="tournament-city">
+                    <IconLocation class="icon" />
                     {{ tournament.city }}
                 </span>
                 <span class="tournament-dates">
@@ -77,6 +77,10 @@ export default {
 
 .tournament-card-body {
     color: var(--color-black-light);
+}
+
+.tournament-card-body > span {
+    margin: 4px 40px 0 0;
 }
 
 .tournament-card > a {

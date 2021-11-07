@@ -3,7 +3,6 @@
         <div class="content-container">
             <Logo class="navbar-logo" />
             <div class="navbar-right">
-                <div class="navbar-total">Tournaments: {{ total }}</div>
                 <input
                     v-model="searchInput"
                     type="text"
@@ -20,12 +19,6 @@ export default {
     data() {
         return {
             searchInput: ''
-        }
-    },
-    props: {
-        total: {
-            type: [Number, String],
-            default: '--'
         }
     },
     watch: {

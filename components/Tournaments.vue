@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar :total="total" @newInputValue="updateInput" />
+        <Navbar @newInputValue="updateInput" />
         <div class="content-container">
             <p v-if="$fetchState.pending" class="message info">
                 Fetching tournaments...
@@ -33,7 +33,6 @@ export default {
     async fetch() {
         const urlAPI = this.$config.apiURL
         const APItournaments = await fetch(urlAPI).then((res) => res.json())
-        this.total = APItournaments.total
         this.tournaments = APItournaments.tournaments
     },
     computed: {
