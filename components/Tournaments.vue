@@ -42,13 +42,12 @@ export default {
     computed: {
         filteredTournaments() {
             return this.tournaments.filter((t) => {
-                return t.name
-                    .toLowerCase()
-                    .match(this.searchInput.toLowerCase())
+                return Object.keys(t).some((key) => {
+                    return t[key]
+                        .toLowerCase()
+                        .match(this.searchInput.toLowerCase())
+                })
             })
-        },
-        total() {
-            return this.filteredTournaments.length
         }
     },
     methods: {
