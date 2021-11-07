@@ -25,7 +25,7 @@ export default {
     css: ['~/assets/css/main.css'],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [],
+    plugins: ['~/plugins/i18n.js'],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
@@ -45,5 +45,14 @@ export default {
     // Runtime variables
     publicRuntimeConfig: {
         apiURL: process.env.API_URL || 'http://localhost:8000'
+    },
+
+    // Translations: https://i18n.nuxtjs.org
+    i18n: {
+        locales: ['en'],
+        defaultLocale: 'en',
+        vueI18n: {
+            fallbackLocale: 'en'
+        }
     }
 }

@@ -3,13 +3,16 @@
         <Navbar @newInputValue="updateInput" />
         <div class="content-container">
             <p v-if="$fetchState.pending" class="message info">
-                Fetching tournaments...
+                <TournamentSkeletonCard
+                    v-for="i in skeletonsDisplay"
+                    :key="i"
+                />
             </p>
             <p v-else-if="$fetchState.error" class="message error">
-                An error occurred :(
+                {{ $t('error.error-found') }}
             </p>
             <p v-else-if="!filteredTournaments.length" class="message info">
-                No tournaments found :(
+                {{ $t('error.no-result-found') }}
             </p>
             <div v-else>
                 <TournamentCard
@@ -27,7 +30,8 @@ export default {
     data() {
         return {
             tournaments: [],
-            searchInput: ''
+            searchInput: '',
+            skeletonsDisplay: 10
         }
     },
     async fetch() {

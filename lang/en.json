@@ -1,0 +1,17 @@
+{
+    "title": "Find all chess tournaments",
+    "home": "Home",
+    "language": {
+        "ca": "Catalan",
+        "en": "English",
+        "es": "Spanish"
+    },
+    "error": {
+        "error-found": "An error occurred",
+        "page-not-found": "Page not found",
+        "no-result-found": "No result found"
+    },
+    "action": {
+        "search": "Search"
+    }
+}

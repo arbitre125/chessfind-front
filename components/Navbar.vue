@@ -6,7 +6,7 @@
                 <input
                     v-model="searchInput"
                     type="text"
-                    placeholder="Search..."
+                    :placeholder="$t('action.search') + '...'"
                     class="navbar-search"
                 />
             </div>
