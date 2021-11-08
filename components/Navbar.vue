@@ -71,7 +71,7 @@ export default {
 .navbar {
     width: 100%;
     background-color: var(--color-white);
-    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--color-shadow);
     overflow: hidden;
     position: fixed;
     top: 0;
