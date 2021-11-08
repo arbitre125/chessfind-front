@@ -9,6 +9,24 @@
                     :placeholder="$t('action.search') + '...'"
                     class="navbar-search"
                 />
+                <button
+                    class="navbar-filter"
+                    @click="displayFilter = !displayFilter"
+                >
+                    <span v-if="displayFilter">{{ $t('action.close') }}</span>
+                    <span v-else>{{ $t('action.filter') }}</span>
+                </button>
+            </div>
+        </div>
+        <div v-if="displayFilter" class="content-container">
+            <div class="tournaments-filter">
+                <div class="filter-header">Filters</div>
+                <div class="filter-item">
+                    <label>
+                        <input v-model="filterNotStarted" type="checkbox" />
+                        Not started
+                    </label>
+                </div>
             </div>
         </div>
     </div>
@@ -18,12 +36,21 @@
 export default {
     data() {
         return {
-            searchInput: ''
+            searchInput: '',
+            displayFilter: false,
+            filterNotStarted: false
         }
     },
     watch: {
         searchInput(newValue, oldValue) {
-            if (newValue !== oldValue) this.$emit('newInputValue', newValue)
+            if (newValue !== oldValue) {
+                this.$emit('newInputValue', newValue)
+            }
+        },
+        filterNotStarted(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newFilterNotStartedValue', newValue)
+            }
         }
     }
 }
@@ -46,8 +73,10 @@ export default {
 
 .navbar-logo {
     width: 120px;
+    min-width: 40px;
     height: 40px;
-    margin-right: 40px;
+    margin-right: 1rem;
+    padding: 4px 0;
 }
 
 .navbar-right {
@@ -68,5 +97,33 @@ export default {
     padding: 0 12px;
     border-radius: 8px;
     border: 1px solid var(--color-border);
+}
+
+.navbar-filter {
+    margin-left: 12px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    padding: 4px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 60px;
+}
+.navbar-filter:hover {
+    border-color: var(--color-border-hover);
+}
+
+.filter-header {
+    margin: 8px 0;
+    font-size: 1.2rem;
+}
+.tournaments-filter {
+    width: 100%;
+    margin-bottom: 12px;
+}
+input[type='checkbox'],
+input[type='radio'] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
 }
 </style>

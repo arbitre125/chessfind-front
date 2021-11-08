@@ -1,6 +1,9 @@
 <template>
     <div>
-        <Navbar @newInputValue="updateInput" />
+        <Navbar
+            @newInputValue="updateInput"
+            @newFilterNotStartedValue="updateNotStartedFilter"
+        />
         <div class="content-container">
             <p v-if="$fetchState.pending" class="message info">
                 <TournamentSkeletonCard
@@ -29,17 +32,21 @@
 export default {
     data() {
         return {
+            skeletonsDisplay: 10,
             tournaments: [],
             searchInput: '',
-            skeletonsDisplay: 10
+            notStartedFilter: false
         }
     },
     async fetch() {
-        const urlAPI = this.$config.apiURL
+        const urlAPI = this.$config.apiURL + this.getParams
         const APItournaments = await fetch(urlAPI).then((res) => res.json())
         this.tournaments = APItournaments.tournaments
     },
     computed: {
+        getParams() {
+            return '/?started=' + !this.notStartedFilter
+        },
         filteredTournaments() {
             return this.tournaments.filter((t) => {
                 return Object.keys(t).some((key) => {
@@ -53,6 +60,10 @@ export default {
     methods: {
         updateInput(value) {
             this.searchInput = value
+        },
+        updateNotStartedFilter(value) {
+            this.notStartedFilter = value
+            this.$fetch()
         }
     }
 }

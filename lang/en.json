@@ -12,6 +12,8 @@
         "no-result-found": "No result found"
     },
     "action": {
-        "search": "Search"
+        "search": "Search",
+        "filter": "Filter",
+        "close": "Close"
     }
 }
