@@ -2,10 +2,10 @@
     <div class="default-container">
         <div class="error-info title">
             <h2 v-if="error.statusCode === 404">
-                {{ $t('error.page-not-found') }}
+                {{ $t('error.page_not_found') }}
             </h2>
             <h2 v-else>
-                {{ $t('error.error-found') }}
+                {{ $t('error.error_found') }}
             </h2>
         </div>
         <div class="error-actions">

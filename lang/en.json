@@ -7,13 +7,17 @@
         "es": "Spanish"
     },
     "error": {
-        "error-found": "An error occurred",
-        "page-not-found": "Page not found",
-        "no-result-found": "No result found"
+        "error_found": "An error occurred",
+        "page_not_found": "Page not found",
+        "no_result_found": "No result found"
     },
     "action": {
         "search": "Search",
         "filter": "Filter",
         "close": "Close"
+    },
+    "filter": {
+        "min_date": "Start date",
+        "max_date": "End date"
     }
 }

@@ -2,7 +2,8 @@
     <div>
         <Navbar
             @newInputValue="updateInput"
-            @newFilterNotStartedValue="updateNotStartedFilter"
+            @newMinDate="updateMinDate"
+            @newMaxDate="updateMaxDate"
         />
         <div class="content-container">
             <p v-if="$fetchState.pending" class="message info">
@@ -12,10 +13,10 @@
                 />
             </p>
             <p v-else-if="$fetchState.error" class="message error">
-                {{ $t('error.error-found') }}
+                {{ $t('error.error_found') }}
             </p>
             <p v-else-if="!filteredTournaments.length" class="message info">
-                {{ $t('error.no-result-found') }}
+                {{ $t('error.no-result_found') }}
             </p>
             <div v-else>
                 <TournamentCard
@@ -35,7 +36,8 @@ export default {
             skeletonsDisplay: 10,
             tournaments: [],
             searchInput: '',
-            notStartedFilter: false
+            minDate: '',
+            maxDate: ''
         }
     },
     async fetch() {
@@ -45,7 +47,16 @@ export default {
     },
     computed: {
         getParams() {
-            return '/?started=' + !this.notStartedFilter
+            let str = '/?'
+
+            if (this.minDate !== '') {
+                str += '&min_date=' + this.formatDate(this.minDate) + '&'
+            }
+            if (this.maxDate !== '') {
+                str += '&max_date=' + this.formatDate(this.maxDate) + '&'
+            }
+
+            return str
         },
         filteredTournaments() {
             return this.tournaments.filter((t) => {
@@ -61,9 +72,24 @@ export default {
         updateInput(value) {
             this.searchInput = value
         },
-        updateNotStartedFilter(value) {
-            this.notStartedFilter = value
+        updateMinDate(value) {
+            this.minDate = value
             this.$fetch()
+        },
+        updateMaxDate(value) {
+            this.maxDate = value
+            this.$fetch()
+        },
+        formatDate(date) {
+            const d = new Date(date)
+            let month = '' + (d.getMonth() + 1)
+            let day = '' + d.getDate()
+            const year = d.getFullYear()
+
+            if (month.length < 2) month = '0' + month
+            if (day.length < 2) day = '0' + day
+
+            return [day, month, year].join('/')
         }
     }
 }

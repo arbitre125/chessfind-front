@@ -20,11 +20,16 @@
         </div>
         <div v-if="displayFilter" class="content-container">
             <div class="tournaments-filter">
-                <div class="filter-header">Filters</div>
                 <div class="filter-item">
                     <label>
-                        <input v-model="filterNotStarted" type="checkbox" />
-                        Not started
+                        {{ $t('filter.min_date') }}
+                        <input v-model="minDate" type="date" />
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        {{ $t('filter.max_date') }}
+                        <input v-model="maxDate" type="date" :min="minDate" />
                     </label>
                 </div>
             </div>
@@ -38,7 +43,8 @@ export default {
         return {
             searchInput: '',
             displayFilter: false,
-            filterNotStarted: false
+            minDate: '',
+            maxDate: ''
         }
     },
     watch: {
@@ -47,9 +53,14 @@ export default {
                 this.$emit('newInputValue', newValue)
             }
         },
-        filterNotStarted(newValue, oldValue) {
+        minDate(newValue, oldValue) {
             if (newValue !== oldValue) {
-                this.$emit('newFilterNotStartedValue', newValue)
+                this.$emit('newMinDate', newValue)
+            }
+        },
+        maxDate(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newMaxDate', newValue)
             }
         }
     }
@@ -125,5 +136,9 @@ input[type='radio'] {
     vertical-align: middle;
     position: relative;
     bottom: 1px;
+}
+.filter-item {
+    display: inline-block;
+    margin: 4px 40px 4px 0;
 }
 </style>
