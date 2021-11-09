@@ -4,6 +4,7 @@
             @newInputValue="updateInput"
             @newMinDate="updateMinDate"
             @newMaxDate="updateMaxDate"
+            @newRegion="updateRegion"
         />
         <div class="content-container">
             <p v-if="$fetchState.pending" class="message info">
@@ -16,7 +17,7 @@
                 {{ $t('error.error_found') }}
             </p>
             <p v-else-if="!filteredTournaments.length" class="message info">
-                {{ $t('error.no-result_found') }}
+                {{ $t('error.no_result_found') }}
             </p>
             <div v-else>
                 <TournamentCard
@@ -37,7 +38,8 @@ export default {
             tournaments: [],
             searchInput: '',
             minDate: '',
-            maxDate: ''
+            maxDate: '',
+            region: ''
         }
     },
     async fetch() {
@@ -54,6 +56,9 @@ export default {
             }
             if (this.maxDate !== '') {
                 str += '&max_date=' + this.formatDate(this.maxDate) + '&'
+            }
+            if (this.region !== '') {
+                str += '&region=' + this.region + '&'
             }
 
             return str
@@ -80,6 +85,10 @@ export default {
             this.maxDate = value
             this.$fetch()
         },
+        updateRegion(value) {
+            this.region = value
+            this.$fetch()
+        },
         formatDate(date) {
             const d = new Date(date)
             let month = '' + (d.getMonth() + 1)
@@ -101,6 +110,6 @@ export default {
 }
 
 .message {
-    margin-top: 8px;
+    margin-top: 60px;
 }
 </style>

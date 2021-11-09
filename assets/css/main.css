@@ -48,9 +48,36 @@ html {
     margin: 0;
 }
 
+input,
+select {
+    padding: 0 8px;
+    border-radius: 8px;
+    height: 32px;
+    border: 1px solid var(--color-border);
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+}
+
 .content-container {
     width: 900px;
     max-width: 100%;
     padding: 8px 20px;
     margin: 0 auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .desktop {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .mobile {
+        display: none !important;
+    }
 }

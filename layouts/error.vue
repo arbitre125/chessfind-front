@@ -24,7 +24,7 @@ export default {
     props: ['error'],
     head() {
         return {
-            title: this.$t('error.error-found')
+            title: this.$t('error.error_found')
         }
     }
 }

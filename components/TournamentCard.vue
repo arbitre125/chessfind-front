@@ -9,7 +9,7 @@
             <div class="tournament-card-body">
                 <span class="tournament-country">
                     <img :src="getFlag" class="tournament-flag" />
-                    {{ tournament.fed }}
+                    {{ $t(`region.${tournament.fed.toLowerCase()}`) }}
                 </span>
                 <span v-if="tournament.city" class="tournament-city">
                     <IconLocation class="icon" />
@@ -47,7 +47,7 @@ export default {
     },
     computed: {
         getFlag() {
-            return require(`@/assets/icons/${this.tournament.fed.toLowerCase()}.svg`)
+            return require(`@/assets/flags/${this.tournament.fed.toLowerCase()}.svg`)
         }
     }
 }
@@ -104,6 +104,8 @@ export default {
     height: 14px;
     border-radius: 4px;
     margin-right: 4px;
+    margin-bottom: -2px;
+    box-shadow: var(--color-shadow);
 }
 
 .tournament-dates {

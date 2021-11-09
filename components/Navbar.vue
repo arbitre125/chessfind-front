@@ -2,7 +2,13 @@
     <div class="navbar">
         <div class="content-container">
             <Logo class="navbar-logo" />
-            <div class="navbar-right">
+            <div class="navbar-right mobile">
+                <div class="icon-menu" @click="toggleMovileMenu">
+                    <IconClose v-if="displayMobileMenu" />
+                    <IconMenu v-else />
+                </div>
+            </div>
+            <div class="navbar-right desktop">
                 <input
                     v-model="searchInput"
                     type="text"
@@ -18,8 +24,18 @@
                 </button>
             </div>
         </div>
-        <div v-if="displayFilter" class="content-container">
+        <div
+            v-if="displayFilter || displayMobileMenu"
+            class="content-container"
+        >
             <div class="tournaments-filter">
+                <input
+                    v-if="displayMobileMenu"
+                    v-model="searchInput"
+                    type="text"
+                    :placeholder="$t('action.search') + '...'"
+                    class="menu-search mobile"
+                />
                 <div class="filter-item">
                     <label>
                         {{ $t('filter.min_date') }}
@@ -32,19 +48,176 @@
                         <input v-model="maxDate" type="date" :min="minDate" />
                     </label>
                 </div>
+                <div class="filter-item">
+                    <label>
+                        {{ $t('filter.region') }}
+                        <select v-model="region">
+                            <option
+                                v-for="reg in filterRegions"
+                                :key="reg"
+                                :value="reg"
+                            >
+                                {{ $t(`region.${reg.toLowerCase()}`) }}
+                            </option>
+                        </select>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import IconClose from './icons/IconClose'
+import IconMenu from './icons/IconMenu'
+
 export default {
+    components: {
+        IconClose,
+        IconMenu
+    },
     data() {
         return {
+            displayMobileMenu: false,
             searchInput: '',
             displayFilter: false,
             minDate: '',
-            maxDate: ''
+            maxDate: '',
+            region: 'ESP'
+        }
+    },
+    computed: {
+        filterRegions() {
+            return [
+                'ALB',
+                'ALG',
+                'AND',
+                'ARG',
+                'ARM',
+                'ARU',
+                'AUS',
+                'AUT',
+                'AZE',
+                'BAN',
+                'BEL',
+                'BIH',
+                'BLR',
+                'BOL',
+                'BRA',
+                'BRN',
+                'BUL',
+                'CAN',
+                'CHI',
+                'CHN',
+                'CIV',
+                'CMR',
+                'COL',
+                'CRC',
+                'CRO',
+                'CUB',
+                'CYP',
+                'CZE',
+                'DEN',
+                'DOM',
+                'ECU',
+                'EGY',
+                'ENG',
+                'ESA',
+                'ESP',
+                'EST',
+                'FAI',
+                'FIN',
+                'FRA',
+                'GEO',
+                'GER',
+                'GHA',
+                'GRE',
+                'GUA',
+                'HKG',
+                'HON',
+                'HUN',
+                'INA',
+                'IND',
+                'IRI',
+                'IRQ',
+                'IRL',
+                'ISL',
+                'ISR',
+                'ITA',
+                'JAM',
+                'JOR',
+                'JPN',
+                'KAZ',
+                'KEN',
+                'KGZ',
+                'KOR',
+                'KOS',
+                'KSA',
+                'KUW',
+                'LAT',
+                'LBA',
+                'LBN',
+                'LBR',
+                'LES',
+                'LIE',
+                'LTU',
+                'LUX',
+                'MAD',
+                'MAR',
+                'MAS',
+                'MDA',
+                'MDV',
+                'MEX',
+                'MGL',
+                'MKD',
+                'MLT',
+                'MNC',
+                'MNE',
+                'NAM',
+                'NCA',
+                'NED',
+                'NEP',
+                'NGR',
+                'NOR',
+                'PAK',
+                'PAN',
+                'PAR',
+                'PER',
+                'PHI',
+                'POL',
+                'POR',
+                'PUR',
+                'QAT',
+                'ROU',
+                'RSA',
+                'RUS',
+                'SCO',
+                'SEN',
+                'SGP',
+                'SLO',
+                'SRB',
+                'SRI',
+                'SSD',
+                'SUD',
+                'SUI',
+                'SVK',
+                'SWE',
+                'THA',
+                'TOG',
+                'TTO',
+                'TUN',
+                'TUR',
+                'UAE',
+                'UGA',
+                'UKR',
+                'URU',
+                'USA',
+                'UZB',
+                'VEN',
+                'VIE',
+                'ZAM',
+                'ZIM'
+            ].sort()
         }
     },
     watch: {
@@ -62,6 +235,16 @@ export default {
             if (newValue !== oldValue) {
                 this.$emit('newMaxDate', newValue)
             }
+        },
+        region(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newRegion', newValue)
+            }
+        }
+    },
+    methods: {
+        toggleMovileMenu() {
+            this.displayMobileMenu = !this.displayMobileMenu
         }
     }
 }
@@ -96,6 +279,12 @@ export default {
     display: flex;
 }
 
+.navbar-right.mobile {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .navbar-total {
     width: 140px;
     display: flex;
@@ -105,9 +294,6 @@ export default {
 
 .navbar-search {
     flex-grow: 1;
-    padding: 0 12px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
 }
 
 .navbar-filter {
@@ -117,7 +303,7 @@ export default {
     padding: 4px 12px;
     border-radius: 8px;
     cursor: pointer;
-    width: 60px;
+    width: 80px;
 }
 .navbar-filter:hover {
     border-color: var(--color-border-hover);
@@ -131,14 +317,20 @@ export default {
     width: 100%;
     margin-bottom: 12px;
 }
-input[type='checkbox'],
-input[type='radio'] {
-    vertical-align: middle;
-    position: relative;
-    bottom: 1px;
-}
+
 .filter-item {
     display: inline-block;
-    margin: 4px 40px 4px 0;
+    margin: 8px 40px 8px 0;
+}
+
+.icon-menu {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+}
+
+.menu-search {
+    width: 100%;
+    margin: 4px 0 8px 0;
 }
 </style>
