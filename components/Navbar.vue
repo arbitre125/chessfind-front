@@ -19,8 +19,12 @@
                     class="navbar-filter"
                     @click="displayFilter = !displayFilter"
                 >
-                    <span v-if="displayFilter">{{ $t('action.close') }}</span>
-                    <span v-else>{{ $t('action.filter') }}</span>
+                    <div v-if="displayFilter" class="close-filter">
+                        <span>{{ $t('action.close') }}</span>
+                    </div>
+                    <div v-else class="open-filter">
+                        <span>{{ $t('action.filter') }}</span>
+                    </div>
                 </button>
             </div>
         </div>
@@ -34,7 +38,7 @@
                     v-model="searchInput"
                     type="text"
                     :placeholder="$t('action.search') + '...'"
-                    class="menu-search mobile"
+                    class="search-menu mobile"
                 />
                 <div class="filter-item">
                     <label>
@@ -294,6 +298,7 @@ export default {
 
 .navbar-search {
     flex-grow: 1;
+    padding-left: 12px;
 }
 
 .navbar-filter {
@@ -307,6 +312,13 @@ export default {
 }
 .navbar-filter:hover {
     border-color: var(--color-border-hover);
+}
+
+.open-filter,
+.close-filter {
+    display: inline-flex;
+    align-content: center;
+    align-items: flex-end;
 }
 
 .filter-header {
@@ -329,7 +341,7 @@ export default {
     margin-right: 4px;
 }
 
-.menu-search {
+.search-menu {
     width: 100%;
     margin: 4px 0 8px 0;
 }

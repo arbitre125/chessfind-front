@@ -7,7 +7,7 @@
             @newRegion="updateRegion"
         />
         <div class="content-container">
-            <p v-if="$fetchState.pending" class="message info">
+            <p v-if="$fetchState.pending">
                 <TournamentSkeletonCard
                     v-for="i in skeletonsDisplay"
                     :key="i"

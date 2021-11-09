@@ -77,10 +77,22 @@ export default {
 
 .tournament-card-body {
     color: var(--color-black-light);
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .tournament-card-body > span {
     margin: 4px 40px 0 0;
+}
+
+@media only screen and (max-width: 768px) {
+    .tournament-card-body > span {
+        flex-direction: column;
+        align-content: center;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-top: 8px;
+    }
 }
 
 .tournament-card > a {
