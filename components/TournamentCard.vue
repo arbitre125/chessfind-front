@@ -64,7 +64,7 @@ export default {
     margin: 8px 0;
     padding: 12px 16px 16px 16px;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
 
 .tournament-card:hover {
@@ -114,7 +114,7 @@ export default {
 .tournament-flag {
     width: 18px;
     height: 14px;
-    border-radius: 4px;
+    border-radius: 2px;
     margin-right: 4px;
     margin-bottom: -2px;
     box-shadow: var(--color-shadow);

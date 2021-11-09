@@ -29,6 +29,7 @@
     --color-border: var(--color-grey-light);
     --color-border-hover: var(--color-grey-dark);
     --color-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    --border-radius: 8px;
 }
 
 html {
@@ -80,4 +81,14 @@ input[type='radio'] {
     .mobile {
         display: none !important;
     }
+}
+
+.info {
+    background-color: #E5F8FF;
+    color: #007099
+}
+
+.error {
+    background-color: #FFF2F9;
+    color: #98014C
 }

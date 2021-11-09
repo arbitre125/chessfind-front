@@ -306,7 +306,7 @@ export default {
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
     padding: 4px 12px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     width: 80px;
 }
@@ -339,6 +339,7 @@ export default {
     width: 24px;
     height: 24px;
     margin-right: 4px;
+    cursor: pointer;
 }
 
 .search-menu {

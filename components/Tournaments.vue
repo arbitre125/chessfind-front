@@ -7,18 +7,23 @@
             @newRegion="updateRegion"
         />
         <div class="content-container">
-            <p v-if="$fetchState.pending">
+            <div v-if="$fetchState.pending">
                 <TournamentSkeletonCard
                     v-for="i in skeletonsDisplay"
                     :key="i"
                 />
-            </p>
-            <p v-else-if="$fetchState.error" class="message error">
-                {{ $t('error.error_found') }}
-            </p>
-            <p v-else-if="!filteredTournaments.length" class="message info">
-                {{ $t('error.no_result_found') }}
-            </p>
+            </div>
+            <div v-else-if="$fetchState.error" class="message error">
+                <img src="@/assets/icons/error.svg" class="placeholder-icon" />
+                <h2>{{ $t('error.error_found') }}</h2>
+            </div>
+            <div v-else-if="!filteredTournaments.length" class="message info">
+                <img
+                    src="@/assets/icons/no_data.svg"
+                    class="placeholder-icon"
+                />
+                <h2>{{ $t('error.no_result_found') }}</h2>
+            </div>
             <div v-else>
                 <TournamentCard
                     v-for="tournament of filteredTournaments"
@@ -110,6 +115,19 @@ export default {
 }
 
 .message {
-    margin-top: 60px;
+    margin-top: 80px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    border-radius: var(--border-radius);
+}
+
+.placeholder-icon {
+    max-height: 200px;
+    max-width: 400px;
+    margin-bottom: 12px;
 }
 </style>
