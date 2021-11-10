@@ -14,7 +14,9 @@
     "action": {
         "search": "Search",
         "filter": "Filter",
-        "close": "Close"
+        "close": "Close",
+        "select_region": "Select region",
+        "clean_filters": "Clean filters"
     },
     "filter": {
         "min_date": "Start date",

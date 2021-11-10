@@ -3,8 +3,8 @@
         <div class="content-container">
             <Logo class="navbar-logo" />
             <div class="navbar-right mobile">
-                <div class="icon-menu" @click="toggleMovileMenu">
-                    <IconClose v-if="displayMobileMenu" />
+                <div class="icon-menu" @click="displayFilter = !displayFilter">
+                    <IconClose v-if="displayFilter" />
                     <IconMenu v-else />
                 </div>
             </div>
@@ -28,13 +28,9 @@
                 </button>
             </div>
         </div>
-        <div
-            v-if="displayFilter || displayMobileMenu"
-            class="content-container"
-        >
+        <div v-if="displayFilter" class="content-container">
             <div class="tournaments-filter">
                 <input
-                    v-if="displayMobileMenu"
                     v-model="searchInput"
                     type="text"
                     :placeholder="$t('action.search') + '...'"
@@ -56,6 +52,9 @@
                     <label>
                         {{ $t('filter.region') }}
                         <select v-model="region">
+                            <option value="">
+                                {{ $t('action.select_region') }}
+                            </option>
                             <option
                                 v-for="reg in filterRegions"
                                 :key="reg"
@@ -66,12 +65,22 @@
                         </select>
                     </label>
                 </div>
+                <div class="filter-item clean">
+                    <button
+                        class="navbar-filter clean"
+                        :disabled="emptyFilters"
+                        @click="cleanFilters"
+                    >
+                        {{ $t('action.clean_filters') }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { getCountries } from '../utils/countries'
 import IconClose from './icons/IconClose'
 import IconMenu from './icons/IconMenu'
 
@@ -82,146 +91,21 @@ export default {
     },
     data() {
         return {
-            displayMobileMenu: false,
             searchInput: '',
-            displayFilter: false,
+            displayFilter: true,
             minDate: '',
             maxDate: '',
-            region: 'ESP'
+            region: ''
         }
     },
     computed: {
         filterRegions() {
-            return [
-                'ALB',
-                'ALG',
-                'AND',
-                'ARG',
-                'ARM',
-                'ARU',
-                'AUS',
-                'AUT',
-                'AZE',
-                'BAN',
-                'BEL',
-                'BIH',
-                'BLR',
-                'BOL',
-                'BRA',
-                'BRN',
-                'BUL',
-                'CAN',
-                'CHI',
-                'CHN',
-                'CIV',
-                'CMR',
-                'COL',
-                'CRC',
-                'CRO',
-                'CUB',
-                'CYP',
-                'CZE',
-                'DEN',
-                'DOM',
-                'ECU',
-                'EGY',
-                'ENG',
-                'ESA',
-                'ESP',
-                'EST',
-                'FAI',
-                'FIN',
-                'FRA',
-                'GEO',
-                'GER',
-                'GHA',
-                'GRE',
-                'GUA',
-                'HKG',
-                'HON',
-                'HUN',
-                'INA',
-                'IND',
-                'IRI',
-                'IRQ',
-                'IRL',
-                'ISL',
-                'ISR',
-                'ITA',
-                'JAM',
-                'JOR',
-                'JPN',
-                'KAZ',
-                'KEN',
-                'KGZ',
-                'KOR',
-                'KOS',
-                'KSA',
-                'KUW',
-                'LAT',
-                'LBA',
-                'LBN',
-                'LBR',
-                'LES',
-                'LIE',
-                'LTU',
-                'LUX',
-                'MAD',
-                'MAR',
-                'MAS',
-                'MDA',
-                'MDV',
-                'MEX',
-                'MGL',
-                'MKD',
-                'MLT',
-                'MNC',
-                'MNE',
-                'NAM',
-                'NCA',
-                'NED',
-                'NEP',
-                'NGR',
-                'NOR',
-                'PAK',
-                'PAN',
-                'PAR',
-                'PER',
-                'PHI',
-                'POL',
-                'POR',
-                'PUR',
-                'QAT',
-                'ROU',
-                'RSA',
-                'RUS',
-                'SCO',
-                'SEN',
-                'SGP',
-                'SLO',
-                'SRB',
-                'SRI',
-                'SSD',
-                'SUD',
-                'SUI',
-                'SVK',
-                'SWE',
-                'THA',
-                'TOG',
-                'TTO',
-                'TUN',
-                'TUR',
-                'UAE',
-                'UGA',
-                'UKR',
-                'URU',
-                'USA',
-                'UZB',
-                'VEN',
-                'VIE',
-                'ZAM',
-                'ZIM'
-            ].sort()
+            return getCountries().sort()
+        },
+        emptyFilters() {
+            return (
+                this.minDate === '' && this.maxDate === '' && this.region === ''
+            )
         }
     },
     watch: {
@@ -247,8 +131,11 @@ export default {
         }
     },
     methods: {
-        toggleMovileMenu() {
-            this.displayMobileMenu = !this.displayMobileMenu
+        cleanFilters() {
+            this.minDate = ''
+            this.maxDate = ''
+            this.region = ''
+            this.$emit('cleanFilters')
         }
     }
 }
@@ -260,7 +147,7 @@ export default {
     background-color: var(--color-white);
     box-shadow: var(--color-shadow);
     overflow: hidden;
-    position: fixed;
+    position: sticky;
     top: 0;
 }
 
@@ -314,6 +201,12 @@ export default {
     border-color: var(--color-border-hover);
 }
 
+.navbar-filter.clean {
+    margin: 0;
+    width: 100%;
+    height: 32px;
+}
+
 .open-filter,
 .close-filter {
     display: inline-flex;
@@ -333,6 +226,32 @@ export default {
 .filter-item {
     display: inline-block;
     margin: 8px 40px 8px 0;
+    color: var(--color-black-light);
+    width: 200px;
+}
+
+.filter-item input,
+.filter-item select {
+    display: block;
+    margin-top: 4px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.filter-item input:hover,
+.filter-item select:hover {
+    border-color: var(--color-border-hover);
+}
+
+.filter-item.clean {
+    margin: 4px 0 0 0;
+    width: 120px;
+}
+
+@media only screen and (max-width: 768px) {
+    .filter-item.clean {
+        margin-top: 12px;
+    }
 }
 
 .icon-menu {

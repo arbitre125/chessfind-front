@@ -7,7 +7,7 @@
                 </div>
             </div>
             <div class="tournament-card-body">
-                <span class="tournament-country">
+                <span v-if="isFedSupported" class="tournament-country">
                     <img :src="getFlag" class="tournament-flag" />
                     {{ $t(`region.${tournament.fed.toLowerCase()}`) }}
                 </span>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { getCountries } from '../utils/countries'
 import IconLocation from './icons/IconLocation'
 import IconCalendar from './icons/IconCalendar'
 import IconLink from './icons/IconLink'
@@ -46,6 +47,10 @@ export default {
         }
     },
     computed: {
+        isFedSupported() {
+            const fed = this.tournament.fed.toUpperCase()
+            return getCountries().includes(fed)
+        },
         getFlag() {
             return require(`@/assets/flags/${this.tournament.fed.toLowerCase()}.svg`)
         }
@@ -109,6 +114,7 @@ export default {
 .tournament-city,
 .tournament-dates {
     margin-right: 40px;
+    min-width: 120px;
 }
 
 .tournament-flag {

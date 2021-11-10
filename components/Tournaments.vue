@@ -5,6 +5,7 @@
             @newMinDate="updateMinDate"
             @newMaxDate="updateMaxDate"
             @newRegion="updateRegion"
+            @cleanFilters="cleanFilters"
         />
         <div class="content-container">
             <div v-if="$fetchState.pending">
@@ -94,6 +95,12 @@ export default {
             this.region = value
             this.$fetch()
         },
+        cleanFilters() {
+            this.minDate = ''
+            this.maxDate = ''
+            this.region = ''
+            this.$fetch()
+        },
         formatDate(date) {
             const d = new Date(date)
             let month = '' + (d.getMonth() + 1)
@@ -110,12 +117,7 @@ export default {
 </script>
 
 <style scoped>
-.content-container {
-    margin-top: 40px;
-}
-
 .message {
-    margin-top: 80px;
     text-align: center;
     display: flex;
     flex-direction: column;
