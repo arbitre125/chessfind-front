@@ -24,6 +24,13 @@
         "region": "Region"
     },
     "region": {
+        "af": "Africa",
+        "an": "Antarctica",
+        "as": "Asia",
+        "eu": "Europe",
+        "na": "North America",
+        "oc": "Oceania",
+        "sa": "South America",
         "alb": "Albania",
         "alg": "Algeria",
         "and": "Andorra",
@@ -152,6 +159,8 @@
         "ven": "Venezuela",
         "vie": "Vietnam",
         "zam": "Zambia",
-        "zim": "Zimbabwe"
+        "zim": "Zimbabwe",
+        "cat": "Catalonia",
+        "lic": "Lichess.org"
     }
 }

@@ -1,30 +1,32 @@
 <template>
     <div class="tournament-card">
-        <a :href="tournament.link" target="_blank">
-            <div class="tournament-card-header">
-                <div class="tournament-name">
-                    {{ tournament.name }}
-                </div>
-            </div>
-            <div class="tournament-card-body">
-                <span v-if="isFedSupported" class="tournament-country">
-                    <img :src="getFlag" class="tournament-flag" />
-                    {{ $t(`region.${tournament.fed.toLowerCase()}`) }}
-                </span>
-                <span v-if="tournament.city" class="tournament-city">
-                    <IconLocation class="icon" />
-                    {{ tournament.city }}
-                </span>
-                <span class="tournament-dates">
-                    <IconCalendar class="icon" />
-                    {{ tournament.start }} - {{ tournament.end }}
-                </span>
-                <span class="tournament-source">
-                    <IconLink class="icon" />
-                    {{ tournament.source }}
-                </span>
+        <a
+            :href="tournament.link"
+            target="_blank"
+            class="tournament-card-header"
+        >
+            <div class="tournament-name">
+                {{ tournament.name }}
             </div>
         </a>
+        <div class="tournament-card-body">
+            <span v-if="isFedSupported" class="tournament-country">
+                <img :src="getFlag" class="tournament-flag" />
+                {{ $t(`region.${tournament.fed.toLowerCase()}`) }}
+            </span>
+            <span v-if="tournament.city" class="tournament-city">
+                <IconLocation class="icon" />
+                {{ tournament.city }}
+            </span>
+            <span class="tournament-dates">
+                <IconCalendar class="icon" />
+                {{ tournament.start }} - {{ tournament.end }}
+            </span>
+            <span class="tournament-source">
+                <IconLink class="icon" />
+                {{ tournament.source }}
+            </span>
+        </div>
     </div>
 </template>
 

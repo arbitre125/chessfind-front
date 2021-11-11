@@ -57,10 +57,10 @@
                             </option>
                             <option
                                 v-for="reg in filterRegions"
-                                :key="reg"
-                                :value="reg"
+                                :key="reg[1]"
+                                :value="reg[1]"
                             >
-                                {{ $t(`region.${reg.toLowerCase()}`) }}
+                                {{ reg[0] }}
                             </option>
                         </select>
                     </label>
@@ -100,7 +100,11 @@ export default {
     },
     computed: {
         filterRegions() {
-            return getCountries().sort()
+            const countries = getCountries().map((name) => [
+                this.$t(`region.${name.toLowerCase()}`),
+                name
+            ])
+            return new Map([...countries].sort())
         },
         emptyFilters() {
             return (
