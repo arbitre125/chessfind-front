@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getCountries } from '../utils/countries'
+import { getCountries } from '../utils/filters'
 import IconClose from './icons/IconClose'
 import IconMenu from './icons/IconMenu'
 

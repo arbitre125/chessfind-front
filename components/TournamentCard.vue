@@ -14,10 +14,10 @@
                 <img :src="getFlag" class="tournament-flag" />
                 {{ $t(`region.${tournament.fed.toLowerCase()}`) }}
             </span>
-            <span v-if="tournament.city" class="tournament-city">
+            <span v-if="getCity" class="tournament-city">
                 <IconLocation class="icon" />
                 <a :href="getCityLink" target="_blank">
-                    {{ tournament.city }}
+                    {{ getCity }}
                 </a>
             </span>
             <span class="tournament-dates">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getCountries } from '../utils/countries'
+import { getCountries } from '../utils/filters'
 import IconLocation from './icons/IconLocation'
 import IconCalendar from './icons/IconCalendar'
 import IconLink from './icons/IconLink'
@@ -58,6 +58,12 @@ export default {
         getFlag() {
             return require(`@/assets/flags/${this.tournament.fed.toLowerCase()}.svg`)
         },
+        getCity() {
+            if (this.isFedSupported & !this.tournament.city) {
+                return this.$t(`region.${this.tournament.fed.toLowerCase()}`)
+            }
+            return this.tournament.city
+        },
         getCityLink() {
             const city = this.tournament.city.toLowerCase()
             const URLcontain = ['http', '.c', '.d', '.e', '.o']
@@ -70,12 +76,13 @@ export default {
                 }
                 return city
             }
-            return (
-                'https://www.google.com/maps/search/' +
-                city +
-                ',' +
-                this.$t(`region.${this.tournament.fed.toLowerCase()}`)
+            const url = 'https://www.google.com/maps/search/'
+            const country = this.$t(
+                `region.${this.tournament.fed.toLowerCase()}`
             )
+            const link = city ? url + city + ',' + country : url + country
+
+            return link
         }
     }
 }
