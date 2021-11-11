@@ -26,6 +26,7 @@
     /* Components */
     --color-text-header: var(--color-black-dark);
     --color-text-body: var(--color-black-light);
+    --color-text-link: var(--color-primary);
     --color-border: var(--color-grey-light);
     --color-border-hover: var(--color-grey-dark);
     --color-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

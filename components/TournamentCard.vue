@@ -16,7 +16,9 @@
             </span>
             <span v-if="tournament.city" class="tournament-city">
                 <IconLocation class="icon" />
-                {{ tournament.city }}
+                <a :href="getCityLink" target="_blank">
+                    {{ tournament.city }}
+                </a>
             </span>
             <span class="tournament-dates">
                 <IconCalendar class="icon" />
@@ -55,6 +57,25 @@ export default {
         },
         getFlag() {
             return require(`@/assets/flags/${this.tournament.fed.toLowerCase()}.svg`)
+        },
+        getCityLink() {
+            const city = this.tournament.city.toLowerCase()
+            const URLcontain = ['http', '.c', '.d', '.e', '.o']
+            const isUrl = URLcontain.some((str) => {
+                return city.includes(str)
+            })
+            if (isUrl) {
+                if (!city.includes('http')) {
+                    return 'http://' + city
+                }
+                return city
+            }
+            return (
+                'https://www.google.com/maps/search/' +
+                city +
+                ',' +
+                this.$t(`region.${this.tournament.fed.toLowerCase()}`)
+            )
         }
     }
 }
@@ -117,6 +138,10 @@ export default {
 .tournament-dates {
     margin-right: 40px;
     min-width: 120px;
+}
+
+.tournament-city > a {
+    color: var(--color-text-body);
 }
 
 .tournament-flag {
