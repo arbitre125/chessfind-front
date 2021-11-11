@@ -70,6 +70,9 @@ export default {
             return str
         },
         filteredTournaments() {
+            if (this.searchInput === '') {
+                return this.tournaments
+            }
             return this.tournaments.filter((t) => {
                 return Object.keys(t).some((key) => {
                     return t[key]
