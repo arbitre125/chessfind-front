@@ -16,11 +16,11 @@
                     class="navbar-search"
                 />
                 <button
-                    class="navbar-filter"
+                    class="navbar-filter display"
                     @click="displayFilter = !displayFilter"
                 >
                     <div v-if="displayFilter" class="close-filter">
-                        <span>{{ $t('action.close') }}</span>
+                        <IconClose />
                     </div>
                     <div v-else class="open-filter">
                         <span>{{ $t('action.filter') }}</span>
@@ -199,10 +199,14 @@ export default {
     padding: 4px 12px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    width: 80px;
+    width: 60px;
 }
 .navbar-filter:hover {
     border-color: var(--color-border-hover);
+}
+
+.navbar-filter.display {
+    padding: 0;
 }
 
 .navbar-filter.clean {

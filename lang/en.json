@@ -31,6 +31,7 @@
         "na": "North America",
         "oc": "Oceania",
         "sa": "South America",
+        "eun": "European Union",
         "alb": "Albania",
         "alg": "Algeria",
         "and": "Andorra",
@@ -159,8 +160,6 @@
         "ven": "Venezuela",
         "vie": "Vietnam",
         "zam": "Zambia",
-        "zim": "Zimbabwe",
-        "r_a": "America",
-        "r_e": "European Union"
+        "zim": "Zimbabwe"
     }
 }

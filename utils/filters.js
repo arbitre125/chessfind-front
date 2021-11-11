@@ -11,10 +11,7 @@ export function getContinents() {
 }
 
 export function getRegions() {
-    return [
-        { id: 'r_A', countries: [] },
-        { id: 'r_E', countries: [] }
-    ]
+    return [{ id: 'EUN', countries: [] }]
 }
 
 export function getCountries() {
