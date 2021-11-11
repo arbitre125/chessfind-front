@@ -240,11 +240,20 @@ export default {
     margin-top: 4px;
     width: 100%;
     cursor: pointer;
+    background-color: var(--color-white);
 }
 
 .filter-item input:hover,
 .filter-item select:hover {
     border-color: var(--color-border-hover);
+}
+
+@media only screen and (max-width: 524px) {
+    .filter-item,
+    .filter-item.clean {
+        margin-right: 0;
+        width: 100% !important;
+    }
 }
 
 .filter-item.clean {
