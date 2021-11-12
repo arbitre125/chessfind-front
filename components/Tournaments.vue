@@ -54,7 +54,7 @@ export default {
         this.loading = true
 
         await this.$axios
-            .post(this.$config.apiURL, this.getParams)
+            .post(this.$config.apiURL, this.getParams, this.getHeaders)
             .then((response) => {
                 this.tournaments = response.data.tournaments
                 this.loading = false
@@ -79,6 +79,20 @@ export default {
             }
 
             return params
+        },
+        getHeaders() {
+            return [
+                { key: 'Access-Control-Allow-Credentials', value: 'true' },
+                { key: 'Access-Control-Allow-Origin', value: '*' },
+                {
+                    key: 'Access-Control-Allow-Methods',
+                    value: 'GET, OPTIONS, PATCH, DELETE, POST, PUT'
+                },
+                {
+                    key: 'Access-Control-Allow-Headers',
+                    value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+                }
+            ]
         },
         filteredTournaments() {
             if (this.searchInput === '') {
