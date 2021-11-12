@@ -8,13 +8,13 @@
             @cleanFilters="cleanFilters"
         />
         <div class="content-container">
-            <div v-if="$fetchState.pending">
+            <div v-if="loading">
                 <TournamentSkeletonCard
                     v-for="i in skeletonsDisplay"
                     :key="i"
                 />
             </div>
-            <div v-else-if="$fetchState.error" class="message error">
+            <div v-else-if="error" class="message error">
                 <img src="@/assets/icons/error.svg" class="placeholder-icon" />
                 <h2>{{ $t('error.error_found') }}</h2>
             </div>
@@ -41,33 +41,45 @@ export default {
     data() {
         return {
             skeletonsDisplay: 10,
+            loading: false,
+            error: false,
             tournaments: [],
             searchInput: '',
             minDate: '',
             maxDate: '',
-            region: ''
+            region: []
         }
     },
     async fetch() {
-        const urlAPI = this.$config.apiURL + this.getParams
-        const APItournaments = await fetch(urlAPI).then((res) => res.json())
-        this.tournaments = APItournaments.tournaments
+        this.loading = true
+        console.log(this.getParams)
+
+        await this.$axios
+            .post(this.$config.apiURL, this.getParams)
+            .then((response) => {
+                this.tournaments = response.data.tournaments
+                this.loading = false
+            })
+            .catch(() => {
+                this.loading = false
+                this.error = true
+            })
     },
     computed: {
         getParams() {
-            let str = '/?'
+            const params = {}
 
             if (this.minDate !== '') {
-                str += '&min_date=' + this.formatDate(this.minDate) + '&'
+                params.min_date = this.formatDate(this.minDate)
             }
             if (this.maxDate !== '') {
-                str += '&max_date=' + this.formatDate(this.maxDate) + '&'
+                params.max_date = this.formatDate(this.maxDate)
             }
-            if (this.region !== '') {
-                str += '&region=' + this.region + '&'
+            if (this.region.length > 0) {
+                params.regions = [this.region]
             }
 
-            return str
+            return params
         },
         filteredTournaments() {
             if (this.searchInput === '') {

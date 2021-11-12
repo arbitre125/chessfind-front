@@ -23,7 +23,7 @@
                         <IconClose />
                     </div>
                     <div v-else class="open-filter">
-                        <span>{{ $t('action.filter') }}</span>
+                        <IconFilter />
                     </div>
                 </button>
             </div>
@@ -83,11 +83,13 @@
 import { getCountries } from '../utils/filters'
 import IconClose from './icons/IconClose'
 import IconMenu from './icons/IconMenu'
+import IconFilter from './icons/IconFilter'
 
 export default {
     components: {
         IconClose,
-        IconMenu
+        IconMenu,
+        IconFilter
     },
     data() {
         return {
@@ -220,6 +222,8 @@ export default {
     display: inline-flex;
     align-content: center;
     align-items: flex-end;
+    width: 24px;
+    padding: 2px;
 }
 
 .filter-header {

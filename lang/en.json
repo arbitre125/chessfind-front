@@ -13,10 +13,8 @@
     },
     "action": {
         "search": "Search",
-        "filter": "Filter",
-        "close": "Close",
         "select_region": "Select region",
-        "clean_filters": "Clean filters"
+        "clean_filters": "Clear filters"
     },
     "filter": {
         "min_date": "Start date",

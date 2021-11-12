@@ -1,14 +1,10 @@
 <template>
     <div class="tournament-card">
-        <a
-            :href="tournament.link"
-            target="_blank"
-            class="tournament-card-header"
-        >
-            <div class="tournament-name">
+        <div class="tournament-card-header">
+            <a :href="tournament.link" target="_blank" class="tournament-name">
                 {{ tournament.name }}
-            </div>
-        </a>
+            </a>
+        </div>
         <div class="tournament-card-body">
             <span v-if="isFedSupported" class="tournament-country">
                 <img :src="getFlag" class="tournament-flag" />
@@ -106,10 +102,6 @@ export default {
     border-color: var(--color-border-hover);
 }
 
-.tournament-card-header {
-    color: var(--color-black-dark);
-}
-
 .tournament-card-body {
     color: var(--color-black-light);
     display: flex;
@@ -117,7 +109,7 @@ export default {
 }
 
 .tournament-card-body > span {
-    margin: 4px 40px 0 0;
+    margin: 8px 40px 0 0;
 }
 
 @media only screen and (max-width: 768px) {
@@ -135,7 +127,8 @@ export default {
 }
 
 .tournament-name {
-    font-size: 24px;
+    color: var(--color-black-dark);
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 8px;
 }
@@ -144,7 +137,7 @@ export default {
 .tournament-city,
 .tournament-dates {
     margin-right: 40px;
-    min-width: 120px;
+    min-width: 80px;
 }
 
 .tournament-city > a {
