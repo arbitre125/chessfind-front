@@ -52,7 +52,6 @@ export default {
     },
     async fetch() {
         this.loading = true
-        console.log(this.getParams)
 
         await this.$axios
             .post(this.$config.apiURL, this.getParams)
