@@ -67,6 +67,10 @@ export default {
     computed: {
         getParams() {
             const params = {}
+            params.mode = 'no-cors'
+            params.headers = {
+                'Access-Control-Allow-Origin': '*'
+            }
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
