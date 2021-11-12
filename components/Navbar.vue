@@ -50,10 +50,10 @@
                 </div>
                 <div class="filter-item">
                     <label>
-                        {{ $t('filter.region') }}
-                        <select v-model="region">
-                            <option value="">
-                                {{ $t('action.select_region') }}
+                        {{ $t('filter.regions') }}
+                        <select v-model="regions">
+                            <option value="" disabled>
+                                {{ $t('action.select_regions') }}
                             </option>
                             <option
                                 v-for="reg in filterRegions"
@@ -97,7 +97,7 @@ export default {
             displayFilter: true,
             minDate: '',
             maxDate: '',
-            region: ''
+            regions: []
         }
     },
     computed: {
@@ -110,7 +110,9 @@ export default {
         },
         emptyFilters() {
             return (
-                this.minDate === '' && this.maxDate === '' && this.region === ''
+                this.minDate === '' &&
+                this.maxDate === '' &&
+                this.regions.length === 0
             )
         }
     },
@@ -130,9 +132,9 @@ export default {
                 this.$emit('newMaxDate', newValue)
             }
         },
-        region(newValue, oldValue) {
+        regions(newValue, oldValue) {
             if (newValue !== oldValue) {
-                this.$emit('newRegion', newValue)
+                this.$emit('newRegions', newValue)
             }
         }
     },
@@ -140,7 +142,7 @@ export default {
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
-            this.region = ''
+            this.regions = []
             this.$emit('cleanFilters')
         }
     }

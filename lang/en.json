@@ -13,13 +13,13 @@
     },
     "action": {
         "search": "Search",
-        "select_region": "Select region",
+        "select_regions": "Select regions",
         "clean_filters": "Clear filters"
     },
     "filter": {
         "min_date": "Start date",
         "max_date": "End date",
-        "region": "Region"
+        "regions": "Regions"
     },
     "region": {
         "af": "Africa",

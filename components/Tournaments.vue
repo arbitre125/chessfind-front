@@ -4,7 +4,7 @@
             @newInputValue="updateInput"
             @newMinDate="updateMinDate"
             @newMaxDate="updateMaxDate"
-            @newRegion="updateRegion"
+            @newRegions="updateRegions"
             @cleanFilters="cleanFilters"
         />
         <div class="content-container">
@@ -47,7 +47,7 @@ export default {
             searchInput: '',
             minDate: '',
             maxDate: '',
-            region: []
+            regions: []
         }
     },
     async fetch() {
@@ -74,8 +74,8 @@ export default {
             if (this.maxDate !== '') {
                 params.max_date = this.formatDate(this.maxDate)
             }
-            if (this.region.length > 0) {
-                params.regions = [this.region]
+            if (this.regions.length > 0) {
+                params.regions = [this.regions]
             }
 
             return params
@@ -119,14 +119,14 @@ export default {
             this.maxDate = value
             this.$fetch()
         },
-        updateRegion(value) {
-            this.region = value
+        updateRegions(value) {
+            this.regions = value
             this.$fetch()
         },
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
-            this.region = ''
+            this.regions = []
             this.$fetch()
         },
         formatDate(date) {
