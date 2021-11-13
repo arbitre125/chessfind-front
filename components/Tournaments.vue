@@ -79,7 +79,7 @@ export default {
                 params.max_date = this.formatDate(this.maxDate)
             }
             if (this.regions.length > 0) {
-                params.regions = [this.regions]
+                params.regions = this.regions
             }
 
             return params

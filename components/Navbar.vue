@@ -36,35 +36,36 @@
                     :placeholder="$t('action.search') + '...'"
                     class="search-menu mobile"
                 />
-                <div class="filter-item">
+                <div class="filter-item min-date">
                     <label>
                         {{ $t('filter.min_date') }}
                         <input v-model="minDate" type="date" />
                     </label>
                 </div>
-                <div class="filter-item">
+                <div class="filter-item max-date">
                     <label>
                         {{ $t('filter.max_date') }}
                         <input v-model="maxDate" type="date" :min="minDate" />
                     </label>
                 </div>
-                <div class="filter-item">
+
+                <div class="filter-item regions">
                     <label>
                         {{ $t('filter.regions') }}
-                        <select v-model="regions">
-                            <option value="" disabled>
-                                {{ $t('action.select_regions') }}
-                            </option>
-                            <option
-                                v-for="reg in filterRegions"
-                                :key="reg[1]"
-                                :value="reg[1]"
-                            >
-                                {{ reg[0] }}
-                            </option>
-                        </select>
+                        <multiselect
+                            v-model="regions"
+                            placeholder="Search region"
+                            label="name"
+                            track-by="code"
+                            :options="filterCountries"
+                            :multiple="true"
+                            :close-on-select="true"
+                        >
+                            <span slot="noResult">No results found.</span>
+                        </multiselect>
                     </label>
                 </div>
+
                 <div class="filter-item clean">
                     <button
                         class="navbar-filter clean"
@@ -80,6 +81,7 @@
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 import { getCountries } from '../utils/filters'
 import IconClose from './icons/IconClose'
 import IconMenu from './icons/IconMenu'
@@ -89,7 +91,8 @@ export default {
     components: {
         IconClose,
         IconMenu,
-        IconFilter
+        IconFilter,
+        Multiselect
     },
     data() {
         return {
@@ -102,11 +105,29 @@ export default {
     },
     computed: {
         filterRegions() {
-            const countries = getCountries().map((name) => [
-                this.$t(`region.${name.toLowerCase()}`),
-                name
-            ])
-            return new Map([...countries].sort())
+            return [
+                {
+                    region: this.$t('region.sa'),
+                    countries: [
+                        { name: this.$t('region.arg'), code: 'ARG' },
+                        { name: this.$t('region.arm'), code: 'ARM' }
+                    ]
+                },
+                {
+                    region: this.$t('region.eu'),
+                    countries: [
+                        { name: this.$t('region.esp'), code: 'ESP' },
+                        { name: this.$t('region.ger'), code: 'GER' }
+                    ]
+                }
+            ]
+        },
+        filterCountries() {
+            const countries = getCountries().map((code) => ({
+                name: this.$t(`region.${code.toLowerCase()}`),
+                code
+            }))
+            return countries.sort((a, b) => (a.name > b.name ? 1 : -1))
         },
         emptyFilters() {
             return (
@@ -133,8 +154,9 @@ export default {
             }
         },
         regions(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newRegions', newValue)
+            const value = newValue.map((res) => res.code)
+            if (value !== oldValue) {
+                this.$emit('newRegions', value)
             }
         }
     },
@@ -241,13 +263,23 @@ export default {
     display: inline-block;
     margin: 8px 40px 8px 0;
     color: var(--color-black-light);
-    width: 200px;
+    width: 288px;
+}
+
+.filter-item.min-date,
+.filter-item.max-date {
+    width: 160px;
+}
+
+.filter-item.regions {
+    max-height: 32px !important;
 }
 
 .filter-item input,
-.filter-item select {
+.filter-item select,
+.multiselect {
     display: block;
-    margin-top: 4px;
+    margin-top: 4px !important;
     width: 100%;
     cursor: pointer;
     background-color: var(--color-white);

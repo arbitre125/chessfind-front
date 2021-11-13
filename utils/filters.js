@@ -1,17 +1,13 @@
-export function getContinents() {
-    return [
-        { id: 'AF', countries: [] },
-        { id: 'AN', countries: [] },
-        { id: 'AS', countries: [] },
-        { id: 'EU', countries: [] },
-        { id: 'NA', countries: [] },
-        { id: 'OC', countries: [] },
-        { id: 'SA', countries: [] }
-    ]
-}
-
 export function getRegions() {
-    return [{ id: 'EUN', countries: [] }]
+    return [
+        { region: 'AF', countries: ['ALG', 'ANG'] },
+        { region: 'AN', countries: [] },
+        { region: 'AS', countries: [] },
+        { region: 'EU', countries: [] },
+        { region: 'NA', countries: [] },
+        { region: 'OC', countries: [] },
+        { region: 'SA', countries: [] }
+    ]
 }
 
 export function getCountries() {
