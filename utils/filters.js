@@ -1,15 +1,3 @@
-export function getRegions() {
-    return [
-        { region: 'AF', countries: ['ALG', 'ANG'] },
-        { region: 'AN', countries: [] },
-        { region: 'AS', countries: [] },
-        { region: 'EU', countries: [] },
-        { region: 'NA', countries: [] },
-        { region: 'OC', countries: [] },
-        { region: 'SA', countries: [] }
-    ]
-}
-
 export function getCountries() {
     return [
         'ALB',
@@ -102,6 +90,7 @@ export function getCountries() {
         'NEP',
         'NGR',
         'NOR',
+        'NZL',
         'PAK',
         'PAN',
         'PAR',
