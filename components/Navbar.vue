@@ -404,7 +404,7 @@ export default {
 }
 .tournaments-filter {
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
 }
 
 .filter-item {
