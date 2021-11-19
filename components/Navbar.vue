@@ -99,7 +99,7 @@ export default {
     data() {
         return {
             searchInput: '',
-            displayFilter: true,
+            displayFilter: false,
             minDate: '',
             maxDate: '',
             regions: []
