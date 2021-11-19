@@ -1,6 +1,7 @@
 <template>
     <div>
         <Navbar
+            :loading="loading"
             @newInputValue="updateInput"
             @newMinDate="updateMinDate"
             @newMaxDate="updateMaxDate"

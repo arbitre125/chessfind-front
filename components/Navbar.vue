@@ -35,24 +35,35 @@
                     type="text"
                     :placeholder="$t('action.search') + '...'"
                     class="search-menu mobile"
+                    :disabled="loading"
                 />
                 <div class="filter-item min-date">
                     <label>
                         {{ $t('filter.min_date') }}
-                        <input v-model="minDate" type="date" />
+                        <input
+                            v-model="minDate"
+                            type="date"
+                            :min="today"
+                            :disabled="loading"
+                        />
                     </label>
                 </div>
                 <div class="filter-item max-date">
                     <label>
                         {{ $t('filter.max_date') }}
-                        <input v-model="maxDate" type="date" :min="minDate" />
+                        <input
+                            v-model="maxDate"
+                            type="date"
+                            :min="minDate || today"
+                            :disabled="loading"
+                        />
                     </label>
                 </div>
 
                 <div class="filter-item clean">
                     <button
                         class="navbar-filter clean"
-                        :disabled="emptyFilters"
+                        :disabled="emptyFilters || loading"
                         @click="cleanFilters"
                     >
                         {{ $t('action.clean_filters') }}
@@ -73,6 +84,8 @@
                             :options="filterRegions"
                             :multiple="true"
                             :close-on-select="true"
+                            :hide-selected="true"
+                            :disabled="loading"
                         >
                             <span slot="noResult">No results found.</span>
                         </multiselect>
@@ -96,6 +109,12 @@ export default {
         IconFilter,
         Multiselect
     },
+    props: {
+        loading: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             searchInput: '',
@@ -106,6 +125,9 @@ export default {
         }
     },
     computed: {
+        today() {
+            return new Date().toISOString().split('T')[0]
+        },
         filterRegions() {
             return [
                 {
