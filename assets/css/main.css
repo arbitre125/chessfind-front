@@ -21,6 +21,14 @@
     --color-black-light: #666666;
     --color-grey-light: #cacaca;
     --color-grey-dark: #a0a0a0;
+    --color-info-dark: #003C80;
+    --color-info-light: #C3D5F1;
+    --color-success-dark: #00600F;
+    --color-success-light: #EAF6EA;
+    --color-warning-dark: #8F3C00;
+    --color-warning-light: #FFF7EB;
+    --color-error-dark: #AD0009;
+    --color-error-light: #FFF6F5;
     --color-white: #ffffff;
 
     /* Components */

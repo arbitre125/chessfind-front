@@ -5,7 +5,10 @@
             <div class="navbar-right mobile">
                 <div class="icon-menu" @click="displayFilter = !displayFilter">
                     <IconClose v-if="displayFilter" />
-                    <IconMenu v-else />
+                    <div v-else>
+                        <IconMenu />
+                        <div v-if="!emptyFilters" class="active-filter"></div>
+                    </div>
                 </div>
             </div>
             <div class="navbar-right desktop">
@@ -24,6 +27,7 @@
                     </div>
                     <div v-else class="open-filter">
                         <IconFilter />
+                        <div v-if="!emptyFilters" class="active-filter"></div>
                     </div>
                 </button>
             </div>
@@ -389,6 +393,7 @@ export default {
 }
 
 .navbar-filter {
+    position: relative;
     margin-left: 12px;
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
@@ -409,6 +414,18 @@ export default {
     margin: 0;
     width: 100%;
     height: 32px;
+}
+
+.active-filter {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--color-info-dark);
+    border: 1px solid var(--color-info-light);
+    width: 12px;
+    height: 12px;
+    box-sizing: border-box;
+    border-radius: 100%;
 }
 
 .open-filter,
@@ -481,6 +498,7 @@ export default {
 }
 
 .icon-menu {
+    position: relative;
     width: 24px;
     height: 24px;
     margin-right: 4px;
