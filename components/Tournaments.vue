@@ -135,6 +135,8 @@ export default {
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
+            this.minDays = null
+            this.maxDays = null
             this.regions = []
             this.$fetch()
         },
