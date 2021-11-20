@@ -5,6 +5,8 @@
             @newInputValue="updateInput"
             @newMinDate="updateMinDate"
             @newMaxDate="updateMaxDate"
+            @newMinDays="updateMinDays"
+            @newMaxDays="updateMaxDays"
             @newRegions="updateRegions"
             @cleanFilters="cleanFilters"
         />
@@ -48,6 +50,8 @@ export default {
             searchInput: '',
             minDate: '',
             maxDate: '',
+            minDays: null,
+            maxDays: null,
             regions: []
         }
     },
@@ -79,6 +83,12 @@ export default {
             if (this.maxDate !== '') {
                 params.max_date = this.formatDate(this.maxDate)
             }
+            if (this.minDays != null) {
+                params.min_days = this.minDays
+            }
+            if (this.maxDays != null) {
+                params.max_days = this.maxDays
+            }
             if (this.regions.length > 0) {
                 params.regions = this.regions
             }
@@ -108,6 +118,14 @@ export default {
         },
         updateMaxDate(value) {
             this.maxDate = value
+            this.$fetch()
+        },
+        updateMinDays(value) {
+            this.minDays = value
+            this.$fetch()
+        },
+        updateMaxDays(value) {
+            this.maxDays = value
             this.$fetch()
         },
         updateRegions(value) {

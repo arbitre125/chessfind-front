@@ -41,6 +41,29 @@
                     class="search-menu mobile"
                     :disabled="loading"
                 />
+
+                <div class="filter-item regions">
+                    <label>
+                        {{ $t('filter.regions') }}
+                        <multiselect
+                            v-model="regions"
+                            placeholder="Search region"
+                            label="name"
+                            track-by="code"
+                            group-label="region"
+                            group-values="countries"
+                            :group-select="true"
+                            :options="filterRegions"
+                            :multiple="true"
+                            :close-on-select="true"
+                            :hide-selected="true"
+                            :disabled="loading"
+                        >
+                            <span slot="noResult">No results found.</span>
+                        </multiselect>
+                    </label>
+                </div>
+
                 <div class="filter-item min-date">
                     <label>
                         {{ $t('filter.min_date') }}
@@ -63,6 +86,28 @@
                         />
                     </label>
                 </div>
+                <div class="filter-item min-date">
+                    <label>
+                        {{ $t('filter.min_days') }}
+                        <input
+                            v-model="minDays"
+                            type="number"
+                            min="1"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
+                <div class="filter-item max-date">
+                    <label>
+                        {{ $t('filter.max_days') }}
+                        <input
+                            v-model="maxDays"
+                            type="number"
+                            :min="minDays || 1"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
 
                 <div class="filter-item clean">
                     <button
@@ -72,28 +117,6 @@
                     >
                         {{ $t('action.clean_filters') }}
                     </button>
-                </div>
-
-                <div class="filter-item regions">
-                    <label>
-                        {{ $t('filter.regions') }}
-                        <multiselect
-                            v-model="regions"
-                            placeholder="Search region"
-                            label="name"
-                            track-by="code"
-                            group-label="region"
-                            group-values="countries"
-                            :group-select="true"
-                            :options="filterRegions"
-                            :multiple="true"
-                            :close-on-select="true"
-                            :hide-selected="true"
-                            :disabled="loading"
-                        >
-                            <span slot="noResult">No results found.</span>
-                        </multiselect>
-                    </label>
                 </div>
             </div>
         </div>
@@ -125,6 +148,8 @@ export default {
             displayFilter: false,
             minDate: '',
             maxDate: '',
+            minDays: null,
+            maxDays: null,
             regions: []
         }
     },
@@ -325,6 +350,16 @@ export default {
                 this.$emit('newMaxDate', newValue)
             }
         },
+        minDays(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newMinDays', newValue)
+            }
+        },
+        maxDays(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newMaxDays', newValue)
+            }
+        },
         regions(newValue, oldValue) {
             const valueCodes = newValue.map((res) => res.code)
             const valueCodesUniques = [...new Set(valueCodes)]
@@ -448,19 +483,21 @@ export default {
 
 .filter-item {
     display: inline-block;
-    margin: 8px 40px 8px 0;
+    margin: 8px 24px 8px 0;
     color: var(--color-black-light);
     width: 288px;
 }
 
 .filter-item.min-date,
-.filter-item.max-date {
-    width: 180px;
+.filter-item.max-date,
+.filter-item.min-days,
+.filter-item.max-days {
+    width: 150px;
 }
 
 .filter-item.regions {
-    max-height: 32px !important;
     width: 100%;
+    margin-bottom: 0;
 }
 
 .filter-item input,
