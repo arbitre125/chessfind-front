@@ -102,6 +102,7 @@ export default {
             return this.tournaments.filter((t) => {
                 return Object.keys(t).some((key) => {
                     return t[key]
+                        .toString()
                         .toLowerCase()
                         .match(this.searchInput.toLowerCase())
                 })
