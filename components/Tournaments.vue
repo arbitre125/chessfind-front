@@ -50,8 +50,8 @@ export default {
             searchInput: '',
             minDate: '',
             maxDate: '',
-            minDays: null,
-            maxDays: null,
+            minDays: '',
+            maxDays: '',
             regions: []
         }
     },
@@ -83,10 +83,10 @@ export default {
             if (this.maxDate !== '') {
                 params.max_date = this.formatDate(this.maxDate)
             }
-            if (this.minDays != null) {
+            if (this.minDays !== '') {
                 params.min_days = this.minDays
             }
-            if (this.maxDays != null) {
+            if (this.maxDays !== '') {
                 params.max_days = this.maxDays
             }
             if (this.regions.length > 0) {
@@ -136,8 +136,8 @@ export default {
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
-            this.minDays = null
-            this.maxDays = null
+            this.minDays = ''
+            this.maxDays = ''
             this.regions = []
             this.$fetch()
         },

@@ -148,8 +148,8 @@ export default {
             displayFilter: false,
             minDate: '',
             maxDate: '',
-            minDays: null,
-            maxDays: null,
+            minDays: '',
+            maxDays: '',
             regions: []
         }
     },
@@ -330,6 +330,8 @@ export default {
             return (
                 this.minDate === '' &&
                 this.maxDate === '' &&
+                this.minDays === '' &&
+                this.maxDays === '' &&
                 this.regions.length === 0
             )
         }
@@ -373,6 +375,8 @@ export default {
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
+            this.minDays = null
+            this.maxDays = null
             this.regions = []
             this.$emit('cleanFilters')
         }
