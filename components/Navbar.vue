@@ -375,8 +375,8 @@ export default {
         cleanFilters() {
             this.minDate = ''
             this.maxDate = ''
-            this.minDays = null
-            this.maxDays = null
+            this.minDays = ''
+            this.maxDays = ''
             this.regions = []
             this.$emit('cleanFilters')
         }
