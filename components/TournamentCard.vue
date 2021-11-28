@@ -20,9 +20,27 @@
                 <IconCalendar class="icon" />
                 {{ tournament.start }} - {{ tournament.end }}
             </span>
-            <span class="tournament-source">
-                <IconLink class="icon" />
-                {{ tournament.source }}
+            <span v-if="tournament.valid_elo_fide" class="tournament-source">
+                <img
+                    :src="require('@/assets/flags/fid.svg')"
+                    class="tournament-flag"
+                />
+                Valid for FIDE elo
+            </span>
+            <span v-if="tournament.rounds" class="tournament-source">
+                <IconRounds class="icon" />
+                {{ tournament.rounds }} rounds
+            </span>
+            <span
+                v-if="tournament.time_control.value"
+                class="tournament-source"
+            >
+                <IconTime class="icon" />
+                {{ tournament.time_control.value }}
+            </span>
+            <span v-if="tournament.average_elo" class="tournament-source">
+                <IconAverage class="icon" />
+                Average elo: {{ tournament.average_elo }}
             </span>
         </div>
     </div>
@@ -32,13 +50,17 @@
 import { getCountries } from '../utils/filters'
 import IconLocation from './icons/IconLocation'
 import IconCalendar from './icons/IconCalendar'
-import IconLink from './icons/IconLink'
+import IconTime from './icons/IconTime'
+import IconAverage from './icons/IconAverage'
+import IconRounds from './icons/IconRounds'
 
 export default {
     components: {
         IconLocation,
         IconCalendar,
-        IconLink
+        IconTime,
+        IconAverage,
+        IconRounds
     },
     props: {
         tournament: {
@@ -87,19 +109,20 @@ export default {
 <style scoped>
 .icon {
     width: 18px;
-    height: 14px;
+    height: 12px;
     margin-right: -2px;
 }
 
 .tournament-card {
-    margin: 8px 0;
+    margin: 12px 0;
     padding: 12px 16px 16px 16px;
-    border: 1px solid var(--color-border);
+    background-color: var(--color-white);
     border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
 }
 
 .tournament-card:hover {
-    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-hover);
 }
 
 .tournament-card-body {
@@ -150,7 +173,7 @@ export default {
     border-radius: 2px;
     margin-right: 4px;
     margin-bottom: -2px;
-    box-shadow: var(--color-shadow);
+    box-shadow: var(--shadow);
 }
 
 .tournament-dates {

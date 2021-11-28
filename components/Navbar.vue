@@ -388,7 +388,7 @@ export default {
 .navbar {
     width: 100%;
     background-color: var(--color-white);
-    box-shadow: var(--color-shadow);
+    box-shadow: var(--shadow);
     overflow: hidden;
     position: sticky;
     top: 0;
