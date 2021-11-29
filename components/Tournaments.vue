@@ -31,10 +31,10 @@
             <div v-else>
                 <div class="header-info">
                     <div class="header-results">
-                        Results: <b>{{ totalResults }}</b> tournaments
+                        <b>{{ totalResults }}</b> tournaments
                     </div>
                     <div class="header-sorting">
-                        Sorting by
+                        Sort by
                         <select v-model="sorting">
                             <option
                                 :value="{ value: 'start', dir_desc: false }"
