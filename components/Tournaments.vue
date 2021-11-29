@@ -249,6 +249,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 32px;
+    height: 32px !important;
+    max-height: 32px !important;
 }
 </style>
