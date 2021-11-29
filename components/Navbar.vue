@@ -520,9 +520,8 @@ export default {
 }
 
 @media only screen and (max-width: 524px) {
-    .filter-item,
+    .filter-item select,
     .filter-item.clean {
-        margin-right: 0;
         width: 100% !important;
     }
 }

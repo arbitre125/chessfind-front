@@ -29,6 +29,72 @@
                 <h2>{{ $t('error.no_result_found') }}</h2>
             </div>
             <div v-else>
+                <div class="header-info">
+                    <div class="header-results">
+                        Results: <b>{{ totalResults }}</b> tournaments
+                    </div>
+                    <div class="header-sorting">
+                        Sorting by
+                        <select v-model="sorting">
+                            <option
+                                :value="{ value: 'start', dir_desc: false }"
+                            >
+                                Sooner start date
+                            </option>
+                            <option :value="{ value: 'start', dir_desc: true }">
+                                Later start date
+                            </option>
+                            <option :value="{ value: 'end', dir_desc: false }">
+                                Sooner end date
+                            </option>
+                            <option :value="{ value: 'end', dir_desc: true }">
+                                Later end date
+                            </option>
+                            <option
+                                :value="{ value: 'rounds', dir_desc: true }"
+                            >
+                                More rounds
+                            </option>
+                            <option
+                                :value="{ value: 'rounds', dir_desc: false }"
+                            >
+                                Less rounds
+                            </option>
+                            <option
+                                :value="{
+                                    value: 'days_duration',
+                                    dir_desc: true
+                                }"
+                            >
+                                More duration
+                            </option>
+                            <option
+                                :value="{
+                                    value: 'days_duration',
+                                    dir_desc: false
+                                }"
+                            >
+                                Less duration
+                            </option>
+                            <option
+                                :value="{
+                                    value: 'average_elo',
+                                    dir_desc: true
+                                }"
+                            >
+                                More average ELO
+                            </option>
+                            <option
+                                :value="{
+                                    value: 'average_elo',
+                                    dir_desc: false
+                                }"
+                            >
+                                Less average ELO
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <TournamentCard
                     v-for="tournament of filteredTournaments"
                     :key="tournament.link"
@@ -47,6 +113,12 @@ export default {
             loading: false,
             error: false,
             tournaments: [],
+            totalTournaments: 0,
+            totalResults: 0,
+            sorting: {
+                value: 'start',
+                dir_desc: false
+            },
             searchInput: '',
             minDate: '',
             maxDate: '',
@@ -62,6 +134,7 @@ export default {
             .post(this.$config.apiURL, this.getParams)
             .then((response) => {
                 this.tournaments = response.data.tournaments
+                this.totalTournaments = response.data.total
                 this.loading = false
             })
             .catch(() => {
@@ -76,6 +149,8 @@ export default {
             params.headers = {
                 'Access-Control-Allow-Origin': '*'
             }
+            params.sorting_value = this.sorting.value
+            params.sorting_dir_desc = this.sorting.dir_desc
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -97,9 +172,11 @@ export default {
         },
         filteredTournaments() {
             if (this.searchInput === '') {
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                this.totalResults = this.totalTournaments
                 return this.tournaments
             }
-            return this.tournaments.filter((t) => {
+            const filtered = this.tournaments.filter((t) => {
                 return Object.keys(t).some((key) => {
                     return t[key]
                         .toString()
@@ -107,6 +184,15 @@ export default {
                         .match(this.searchInput.toLowerCase())
                 })
             })
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.totalResults = filtered.length
+            return filtered
+        }
+    },
+    watch: {
+        sorting(newValue) {
+            console.log('sorting: ', newValue)
+            this.$fetch()
         }
     },
     methods: {
@@ -171,5 +257,12 @@ export default {
     max-height: 200px;
     max-width: 400px;
     margin-bottom: 12px;
+}
+
+.header-info {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>
