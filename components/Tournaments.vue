@@ -37,60 +37,14 @@
                         Sort by
                         <select v-model="sorting">
                             <option
-                                :value="{ value: 'start', dir_desc: false }"
-                            >
-                                Sooner start date
-                            </option>
-                            <option :value="{ value: 'start', dir_desc: true }">
-                                Later start date
-                            </option>
-                            <option :value="{ value: 'end', dir_desc: false }">
-                                Sooner end date
-                            </option>
-                            <option :value="{ value: 'end', dir_desc: true }">
-                                Later end date
-                            </option>
-                            <option
-                                :value="{ value: 'rounds', dir_desc: true }"
-                            >
-                                More rounds
-                            </option>
-                            <option
-                                :value="{ value: 'rounds', dir_desc: false }"
-                            >
-                                Less rounds
-                            </option>
-                            <option
+                                v-for="item in sortOptions"
+                                :key="item"
                                 :value="{
-                                    value: 'days_duration',
-                                    dir_desc: true
+                                    value: item.value,
+                                    dir_desc: item.desc
                                 }"
                             >
-                                More duration
-                            </option>
-                            <option
-                                :value="{
-                                    value: 'days_duration',
-                                    dir_desc: false
-                                }"
-                            >
-                                Less duration
-                            </option>
-                            <option
-                                :value="{
-                                    value: 'average_elo',
-                                    dir_desc: true
-                                }"
-                            >
-                                More average ELO
-                            </option>
-                            <option
-                                :value="{
-                                    value: 'average_elo',
-                                    dir_desc: false
-                                }"
-                            >
-                                Less average ELO
+                                {{ item.display }}
                             </option>
                         </select>
                     </div>
@@ -143,6 +97,36 @@ export default {
             })
     },
     computed: {
+        sortOptions() {
+            return [
+                { value: 'start', desc: false, display: 'Soonest start day' },
+                { value: 'start', desc: true, display: 'Latest start day' },
+                { value: 'end', desc: false, display: 'Soonest end day' },
+                { value: 'end', desc: true, display: 'Latest end day' },
+                { value: 'rounds', desc: true, display: 'More rounds' },
+                { value: 'rounds', desc: false, display: 'Less rounds' },
+                {
+                    value: 'days_duration',
+                    desc: true,
+                    display: 'More duration'
+                },
+                {
+                    value: 'days_duration',
+                    desc: false,
+                    display: 'Less duration'
+                },
+                {
+                    value: 'average_elo',
+                    desc: true,
+                    display: 'More average ELO'
+                },
+                {
+                    value: 'average_elo',
+                    desc: false,
+                    display: 'Less average ELO'
+                }
+            ]
+        },
         getParams() {
             const params = {}
             params.mode = 'cors'
