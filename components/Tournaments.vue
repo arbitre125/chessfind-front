@@ -12,6 +12,7 @@
         />
         <div class="content-container">
             <div v-if="loading">
+                <TournamentSkeletonCard class="header-info" />
                 <TournamentSkeletonCard
                     v-for="i in skeletonsDisplay"
                     :key="i"
@@ -248,5 +249,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 32px;
 }
 </style>
