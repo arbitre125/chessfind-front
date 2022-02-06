@@ -403,7 +403,7 @@ export default {
     width: 120px;
     min-width: 40px;
     height: 40px;
-    margin-right: 1rem;
+    margin-right: 4rem;
     padding: 4px 0;
 }
 
@@ -514,8 +514,8 @@ export default {
     background-color: var(--color-white);
 }
 
-.filter-item input:hover,
-.filter-item select:hover {
+input:hover,
+select:hover {
     border-color: var(--color-border-hover);
 }
 

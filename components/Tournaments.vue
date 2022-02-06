@@ -13,10 +13,7 @@
         <div class="content-container">
             <div v-if="loading">
                 <TournamentSkeletonCard class="header-info" />
-                <TournamentSkeletonCard
-                    v-for="i in skeletonsDisplay"
-                    :key="i"
-                />
+                <TournamentSkeletonCard v-for="i in displayPerPage" :key="i" />
             </div>
             <div v-else-if="error" class="message error">
                 <img src="@/assets/icons/error.svg" class="placeholder-icon" />
@@ -39,7 +36,7 @@
                         <select v-model="sorting">
                             <option
                                 v-for="item in sortOptions"
-                                :key="item"
+                                :key="item.display"
                                 :value="{
                                     value: item.value,
                                     dir_desc: item.desc
@@ -55,6 +52,30 @@
                     :key="tournament.link"
                     :tournament="tournament"
                 />
+                <div class="pagination">
+                    <button
+                        class="pagination-btn"
+                        :disabled="currentPage == 1"
+                        @click="prevPage"
+                    >
+                        <img src="@/assets/icons/arrow_left.svg" />
+                    </button>
+                    <input
+                        v-model="currentPage"
+                        type="number"
+                        :min="1"
+                        :max="maxPages"
+                        @change="updatePage"
+                    />
+                    / {{ maxPages }}
+                    <button
+                        class="pagination-btn"
+                        :disabled="currentPage == maxPages"
+                        @click="nextPage()"
+                    >
+                        <img src="@/assets/icons/arrow_right.svg" />
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -64,12 +85,13 @@
 export default {
     data() {
         return {
-            skeletonsDisplay: 10,
             loading: false,
             error: false,
             tournaments: [],
             totalTournaments: 0,
             totalResults: 0,
+            displayPerPage: 10,
+            currentPage: 1,
             sorting: {
                 value: 'start',
                 dir_desc: false
@@ -79,7 +101,8 @@ export default {
             maxDate: '',
             minDays: '',
             maxDays: '',
-            regions: []
+            regions: [],
+            awaitingInput: false
         }
     },
     async fetch() {
@@ -98,6 +121,9 @@ export default {
             })
     },
     computed: {
+        maxPages() {
+            return Math.ceil(this.totalResults / this.displayPerPage)
+        },
         sortOptions() {
             return [
                 { value: 'start', desc: false, display: 'Soonest start day' },
@@ -134,6 +160,7 @@ export default {
             params.headers = {
                 'Access-Control-Allow-Origin': '*'
             }
+            params.current_page = this.currentPage
             params.sorting_value = this.sorting.value
             params.sorting_dir_desc = this.sorting.dir_desc
 
@@ -175,12 +202,39 @@ export default {
         }
     },
     watch: {
-        sorting(newValue) {
-            console.log('sorting: ', newValue)
+        sorting() {
+            this.currentPage = 1
             this.$fetch()
         }
     },
     methods: {
+        prevPage() {
+            if (this.currentPage > 0) {
+                this.currentPage -= 1
+                this.$fetch()
+            }
+        },
+        nextPage() {
+            if (this.currentPage <= this.maxPages) {
+                this.currentPage += 1
+                this.$fetch()
+            }
+        },
+        updatePage(event) {
+            const value = event.target.value
+            if (parseInt(value) < 1) {
+                this.currentPage = 1
+            } else if (parseInt(value) > this.maxPages) {
+                this.currentPage = this.maxPages
+            }
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
+        },
         updateInput(value) {
             this.searchInput = value
         },
@@ -251,5 +305,33 @@ export default {
     align-items: center;
     height: 32px !important;
     max-height: 32px !important;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination input {
+    margin-right: 8px;
+}
+
+.pagination-btn {
+    margin: 4px 16px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.pagination-btn img {
+    width: 22px;
+    padding-top: 2px;
+}
+.pagination-btn:hover,
+.pagination input:hover {
+    border-color: var(--color-border-hover);
 }
 </style>

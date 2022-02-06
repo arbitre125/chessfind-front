@@ -118,7 +118,6 @@ export default {
     padding: 12px 16px 16px 16px;
     background-color: var(--color-white);
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
 }
 
 .tournament-card:hover {
