@@ -441,7 +441,7 @@ export default {
     cursor: pointer;
     width: 60px;
 }
-.navbar-filter:hover {
+.navbar-filter:hover:enabled {
     border-color: var(--color-border-hover);
 }
 

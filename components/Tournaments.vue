@@ -322,16 +322,19 @@ export default {
     background-color: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius);
-    cursor: pointer;
     font-weight: bold;
+}
+.pagination-btn[disabled] {
+    opacity: 50%;
 }
 
 .pagination-btn img {
     width: 22px;
     padding-top: 2px;
 }
-.pagination-btn:hover,
+.pagination-btn:hover:enabled,
 .pagination input:hover {
     border-color: var(--color-border-hover);
+    cursor: pointer;
 }
 </style>
