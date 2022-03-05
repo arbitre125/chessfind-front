@@ -32,19 +32,30 @@
                         <b>{{ totalResults }}</b> tournaments
                     </div>
                     <div class="header-sorting">
-                        Sort by
-                        <select v-model="sorting">
-                            <option
-                                v-for="item in sortOptions"
-                                :key="item.display"
-                                :value="{
-                                    value: item.value,
-                                    dir_desc: item.desc
-                                }"
-                            >
-                                {{ item.display }}
-                            </option>
-                        </select>
+                        <div class="sorting">
+                            Page
+                            <select v-model="displayPerPage">
+                                <option v-for="page in pageOptions" :key="page">
+                                    {{ page }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="sorting">
+                            Sort by
+                            <select v-model="sorting">
+                                <option
+                                    v-for="item in sortOptions"
+                                    :key="item.display"
+                                    :value="{
+                                        value: item.value,
+                                        dir_desc: item.desc
+                                    }"
+                                >
+                                    {{ item.display }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <TournamentCard
@@ -90,7 +101,7 @@ export default {
             tournaments: [],
             totalTournaments: 0,
             totalResults: 0,
-            displayPerPage: 10,
+            displayPerPage: 5,
             currentPage: 1,
             sorting: {
                 value: 'start',
@@ -123,6 +134,9 @@ export default {
     computed: {
         maxPages() {
             return Math.ceil(this.totalResults / this.displayPerPage)
+        },
+        pageOptions() {
+            return [5, 10, 25, 50, 100]
         },
         sortOptions() {
             return [
@@ -160,6 +174,7 @@ export default {
             params.headers = {
                 'Access-Control-Allow-Origin': '*'
             }
+            params.display_per_page = this.displayPerPage
             params.current_page = this.currentPage
             params.sorting_value = this.sorting.value
             params.sorting_dir_desc = this.sorting.dir_desc
@@ -202,6 +217,10 @@ export default {
         }
     },
     watch: {
+        displayPerPage() {
+            this.currentPage = 1
+            this.$fetch()
+        },
         sorting() {
             this.currentPage = 1
             this.$fetch()
@@ -305,6 +324,14 @@ export default {
     align-items: center;
     height: 32px !important;
     max-height: 32px !important;
+}
+
+.header-sorting {
+    display: inline-flex;
+}
+
+.sorting {
+    margin-left: 10px;
 }
 
 .pagination {
