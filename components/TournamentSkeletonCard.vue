@@ -2,6 +2,7 @@
     <div class="skeleton-card">
         <div class="skeleton-header"></div>
         <div class="skeleton-body"></div>
+        <div class="skeleton-body"></div>
     </div>
 </template>
 
