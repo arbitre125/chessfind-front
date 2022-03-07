@@ -12,7 +12,7 @@
     padding: 12px 16px 16px 16px;
     border-radius: var(--border-radius);
     background-color: #e2e8f0;
-    height: 87px;
+    height: 100px;
 }
 
 .skeleton-header {
@@ -21,7 +21,8 @@
 }
 
 .skeleton-body {
-    height: 21px;
+    height: 16px;
+    margin-bottom: 4px;
 }
 
 .skeleton-header,
