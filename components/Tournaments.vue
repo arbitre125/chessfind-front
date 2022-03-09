@@ -8,6 +8,7 @@
             @newMinDays="updateMinDays"
             @newMaxDays="updateMaxDays"
             @newRegions="updateRegions"
+            @newValidFIDE="updateValidFIDE"
             @cleanFilters="cleanFilters"
         />
         <div class="content-container">
@@ -29,11 +30,12 @@
             <div v-else>
                 <div class="header-info">
                     <div class="header-results">
-                        <b>{{ totalTournaments }}</b> tournaments
+                        <b>{{ totalTournaments }}</b>
+                        {{ $t('tournaments').toLowerCase() }}
                     </div>
                     <div class="header-sorting">
                         <div class="sorting">
-                            Page
+                            {{ $t('page') }}
                             <select v-model="displayPerPage">
                                 <option v-for="page in pageOptions" :key="page">
                                     {{ page }}
@@ -42,7 +44,7 @@
                         </div>
 
                         <div class="sorting">
-                            Sort by
+                            {{ $t('sort_by') }}
                             <select v-model="sorting">
                                 <option
                                     v-for="item in sortOptions"
@@ -112,6 +114,7 @@ export default {
             minDays: '',
             maxDays: '',
             regions: [],
+            onlyValidByFIDEelo: '',
             awaitingInput: false
         }
     },
@@ -178,6 +181,8 @@ export default {
             params.sorting_value = this.sorting.value
             params.sorting_dir_desc = this.sorting.dir_desc
             params.search_text = this.searchInput
+            params.regions = this.regions
+            params.only_valid_fide = this.onlyValidByFIDEelo
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -190,9 +195,6 @@ export default {
             }
             if (this.maxDays !== '') {
                 params.max_days = this.maxDays
-            }
-            if (this.regions.length > 0) {
-                params.regions = this.regions
             }
 
             return params
@@ -266,11 +268,18 @@ export default {
             this.currentPage = 1
             this.$fetch()
         },
+        updateValidFIDE(value) {
+            this.onlyValidByFIDEelo = value
+            this.currentPage = 1
+            this.$fetch()
+        },
         cleanFilters() {
+            this.searchInput = ''
             this.minDate = ''
             this.maxDate = ''
             this.minDays = ''
             this.maxDays = ''
+            this.onlyValidByFIDEelo = ''
             this.regions = []
             this.currentPage = 1
             this.$fetch()

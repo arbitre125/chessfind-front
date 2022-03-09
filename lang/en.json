@@ -1,6 +1,12 @@
 {
     "title": "Find all chess tournaments",
     "home": "Home",
+    "tournaments": "Tournaments",
+    "rounds": "Rounds",
+    "page": "Page",
+    "sort_by": "Sort by",
+    "valid_fide_elo": "Valid for FIDE elo",
+    "average_elo": "Average elo",
     "language": {
         "ca": "Catalan",
         "en": "English",
@@ -13,8 +19,10 @@
     },
     "action": {
         "search": "Search",
-        "select_regions": "Select regions",
-        "clean_filters": "Clear filters"
+        "select_option": "Select option",
+        "clean_filters": "Clear filters",
+        "yes": "Yes",
+        "no": "No"
     },
     "filter": {
         "min_date": "Start date",

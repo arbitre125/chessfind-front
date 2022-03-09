@@ -25,11 +25,11 @@
                     :src="require('@/assets/flags/fid.svg')"
                     class="tournament-flag"
                 />
-                Valid for FIDE elo
+                {{ $t('valid_fide_elo') }}
             </span>
             <span v-if="tournament.rounds" class="tournament-source">
                 <IconRounds class="icon" />
-                {{ tournament.rounds }} rounds
+                {{ tournament.rounds }} {{ $t('rounds').toLowerCase() }}
             </span>
             <span
                 v-if="tournament.time_control.value"
@@ -40,7 +40,7 @@
             </span>
             <span v-if="tournament.average_elo" class="tournament-source">
                 <IconAverage class="icon" />
-                Average elo: {{ tournament.average_elo }}
+                {{ $t('average_elo') }}: {{ tournament.average_elo }}
             </span>
         </div>
     </div>

@@ -108,6 +108,18 @@
                         />
                     </label>
                 </div>
+                <div class="filter-item max-date">
+                    <label>
+                        {{ $t('valid_fide_elo') }}
+                        <select v-model="validFIDEelo">
+                            <option value="">
+                                {{ $t('action.select_option') }}
+                            </option>
+                            <option value="0">{{ $t('action.no') }}</option>
+                            <option value="1">{{ $t('action.yes') }}</option>
+                        </select>
+                    </label>
+                </div>
 
                 <div class="filter-item clean">
                     <button
@@ -144,12 +156,13 @@ export default {
     },
     data() {
         return {
-            searchInput: '',
             displayFilter: false,
+            searchInput: '',
             minDate: '',
             maxDate: '',
             minDays: '',
             maxDays: '',
+            validFIDEelo: '',
             regions: []
         }
     },
@@ -328,10 +341,12 @@ export default {
         },
         emptyFilters() {
             return (
+                this.searchInput === '' &&
                 this.minDate === '' &&
                 this.maxDate === '' &&
                 this.minDays === '' &&
                 this.maxDays === '' &&
+                this.validFIDEelo === '' &&
                 this.regions.length === 0
             )
         }
@@ -362,6 +377,11 @@ export default {
                 this.$emit('newMaxDays', newValue)
             }
         },
+        validFIDEelo(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newValidFIDE', newValue)
+            }
+        },
         regions(newValue, oldValue) {
             const valueCodes = newValue.map((res) => res.code)
             const valueCodesUniques = [...new Set(valueCodes)]
@@ -373,10 +393,12 @@ export default {
     },
     methods: {
         cleanFilters() {
+            this.searchInput = ''
             this.minDate = ''
             this.maxDate = ''
             this.minDays = ''
             this.maxDays = ''
+            this.validFIDEelo = ''
             this.regions = []
             this.$emit('cleanFilters')
         }
@@ -511,12 +533,12 @@ export default {
     margin-top: 4px !important;
     width: 100%;
     cursor: pointer;
-    background-color: var(--color-white);
+    background-color: var(--color-white) !important;
 }
 
 input:hover,
 select:hover {
-    border-color: var(--color-border-hover);
+    border-color: var(--color-border-hover) !important;
 }
 
 @media only screen and (max-width: 524px) {
