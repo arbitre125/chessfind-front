@@ -19,7 +19,7 @@
                 <img src="@/assets/icons/error.svg" class="placeholder-icon" />
                 <h2>{{ $t('error.error_found') }}</h2>
             </div>
-            <div v-else-if="!filteredTournaments.length" class="message info">
+            <div v-else-if="!tournaments.length" class="message info">
                 <img
                     src="@/assets/icons/no_data.svg"
                     class="placeholder-icon"
@@ -29,7 +29,7 @@
             <div v-else>
                 <div class="header-info">
                     <div class="header-results">
-                        <b>{{ totalResults }}</b> tournaments
+                        <b>{{ totalTournaments }}</b> tournaments
                     </div>
                     <div class="header-sorting">
                         <div class="sorting">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <TournamentCard
-                    v-for="tournament of filteredTournaments"
+                    v-for="tournament of tournaments"
                     :key="tournament.link"
                     :tournament="tournament"
                 />
@@ -100,7 +100,6 @@ export default {
             error: false,
             tournaments: [],
             totalTournaments: 0,
-            totalResults: 0,
             displayPerPage: 5,
             currentPage: 1,
             sorting: {
@@ -133,7 +132,7 @@ export default {
     },
     computed: {
         maxPages() {
-            return Math.ceil(this.totalResults / this.displayPerPage)
+            return Math.ceil(this.totalTournaments / this.displayPerPage)
         },
         pageOptions() {
             return [5, 10, 25, 50, 100]
@@ -178,6 +177,7 @@ export default {
             params.current_page = this.currentPage
             params.sorting_value = this.sorting.value
             params.sorting_dir_desc = this.sorting.dir_desc
+            params.search_text = this.searchInput
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -196,24 +196,6 @@ export default {
             }
 
             return params
-        },
-        filteredTournaments() {
-            if (this.searchInput === '') {
-                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                this.totalResults = this.totalTournaments
-                return this.tournaments
-            }
-            const filtered = this.tournaments.filter((t) => {
-                return Object.keys(t).some((key) => {
-                    return t[key]
-                        .toString()
-                        .toLowerCase()
-                        .match(this.searchInput.toLowerCase())
-                })
-            })
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.totalResults = filtered.length
-            return filtered
         }
     },
     watch: {
@@ -256,25 +238,32 @@ export default {
         },
         updateInput(value) {
             this.searchInput = value
+            this.currentPage = 1
+            this.$fetch()
         },
         updateMinDate(value) {
             this.minDate = value
+            this.currentPage = 1
             this.$fetch()
         },
         updateMaxDate(value) {
             this.maxDate = value
+            this.currentPage = 1
             this.$fetch()
         },
         updateMinDays(value) {
             this.minDays = value
+            this.currentPage = 1
             this.$fetch()
         },
         updateMaxDays(value) {
             this.maxDays = value
+            this.currentPage = 1
             this.$fetch()
         },
         updateRegions(value) {
             this.regions = value
+            this.currentPage = 1
             this.$fetch()
         },
         cleanFilters() {
@@ -283,6 +272,7 @@ export default {
             this.minDays = ''
             this.maxDays = ''
             this.regions = []
+            this.currentPage = 1
             this.$fetch()
         },
         formatDate(date) {
