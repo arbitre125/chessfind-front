@@ -7,6 +7,9 @@
     "sort_by": "Sort by",
     "valid_fide_elo": "Valid for FIDE elo",
     "average_elo": "Average elo",
+    "standard": "Classic",
+    "rapid": "Rapid",
+    "blitz": "Blitz",
     "language": {
         "ca": "Catalan",
         "en": "English",
@@ -25,11 +28,12 @@
         "no": "No"
     },
     "filter": {
+        "regions": "Regions",
         "min_date": "Start date",
         "max_date": "End date",
-        "min_days": "Minimum days duration",
-        "max_days": "Maximum days duration",
-        "regions": "Regions"
+        "min_days": "Min. days duration",
+        "max_days": "Max. days duration",
+        "time_control": "Time control"
     },
     "region": {
         "af": "Africa",

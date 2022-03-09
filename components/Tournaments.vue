@@ -9,6 +9,7 @@
             @newMaxDays="updateMaxDays"
             @newRegions="updateRegions"
             @newValidFIDE="updateValidFIDE"
+            @newTimeControlType="updateTimeControlType"
             @cleanFilters="cleanFilters"
         />
         <div class="content-container">
@@ -115,6 +116,7 @@ export default {
             maxDays: '',
             regions: [],
             onlyValidByFIDEelo: '',
+            timeControlType: '',
             awaitingInput: false
         }
     },
@@ -183,6 +185,7 @@ export default {
             params.search_text = this.searchInput
             params.regions = this.regions
             params.only_valid_fide = this.onlyValidByFIDEelo
+            params.time_control_type = this.timeControlType
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -273,6 +276,11 @@ export default {
             this.currentPage = 1
             this.$fetch()
         },
+        updateTimeControlType(value) {
+            this.timeControlType = value
+            this.currentPage = 1
+            this.$fetch()
+        },
         cleanFilters() {
             this.searchInput = ''
             this.minDate = ''
@@ -280,6 +288,7 @@ export default {
             this.minDays = ''
             this.maxDays = ''
             this.onlyValidByFIDEelo = ''
+            this.timeControlType = ''
             this.regions = []
             this.currentPage = 1
             this.$fetch()

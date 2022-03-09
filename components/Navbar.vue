@@ -120,6 +120,21 @@
                         </select>
                     </label>
                 </div>
+                <div class="filter-item max-date">
+                    <label>
+                        {{ $t('filter.time_control') }}
+                        <select v-model="timeControlType">
+                            <option value="">
+                                {{ $t('action.select_option') }}
+                            </option>
+                            <option value="standard">
+                                {{ $t('standard') }}
+                            </option>
+                            <option value="rapid">{{ $t('rapid') }}</option>
+                            <option value="blitz">{{ $t('blitz') }}</option>
+                        </select>
+                    </label>
+                </div>
 
                 <div class="filter-item clean">
                     <button
@@ -163,6 +178,7 @@ export default {
             minDays: '',
             maxDays: '',
             validFIDEelo: '',
+            timeControlType: '',
             regions: []
         }
     },
@@ -347,6 +363,7 @@ export default {
                 this.minDays === '' &&
                 this.maxDays === '' &&
                 this.validFIDEelo === '' &&
+                this.timeControlType === '' &&
                 this.regions.length === 0
             )
         }
@@ -382,6 +399,11 @@ export default {
                 this.$emit('newValidFIDE', newValue)
             }
         },
+        timeControlType(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.$emit('newTimeControlType', newValue)
+            }
+        },
         regions(newValue, oldValue) {
             const valueCodes = newValue.map((res) => res.code)
             const valueCodesUniques = [...new Set(valueCodes)]
@@ -399,6 +421,7 @@ export default {
             this.minDays = ''
             this.maxDays = ''
             this.validFIDEelo = ''
+            this.timeControlType = ''
             this.regions = []
             this.$emit('cleanFilters')
         }
