@@ -32,11 +32,11 @@
                 <div class="header-info">
                     <div class="header-results">
                         <b>{{ totalTournaments }}</b>
-                        {{ $t('tournaments').toLowerCase() }}
+                        {{ $t('results').toLowerCase() }}
                     </div>
                     <div class="header-sorting">
                         <div class="sorting">
-                            {{ $t('page') }}
+                            {{ $t('display') }}
                             <select v-model="displayPerPage">
                                 <option v-for="page in pageOptions" :key="page">
                                     {{ page }}

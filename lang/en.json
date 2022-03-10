@@ -1,9 +1,10 @@
 {
-    "title": "Find all chess tournaments",
+    "title": "Find all chess tournaments around the world",
     "home": "Home",
     "tournaments": "Tournaments",
+    "results": "Results",
     "rounds": "Rounds",
-    "page": "Page",
+    "display": "Display",
     "sort_by": "Sort by",
     "valid_fide_elo": "Valid for FIDE elo",
     "average_elo": "Average elo",
