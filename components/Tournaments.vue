@@ -36,15 +36,6 @@
                     </div>
                     <div class="header-sorting">
                         <div class="sorting">
-                            {{ $t('display') }}
-                            <select v-model="displayPerPage">
-                                <option v-for="page in pageOptions" :key="page">
-                                    {{ page }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="sorting">
                             {{ $t('sort_by') }}
                             <select v-model="sorting">
                                 <option
@@ -103,7 +94,7 @@ export default {
             error: false,
             tournaments: [],
             totalTournaments: 0,
-            displayPerPage: 5,
+            displayPerPage: 10,
             currentPage: 1,
             sorting: {
                 value: 'start',
@@ -138,9 +129,6 @@ export default {
     computed: {
         maxPages() {
             return Math.ceil(this.totalTournaments / this.displayPerPage)
-        },
-        pageOptions() {
-            return [5, 10, 25, 50, 100]
         },
         sortOptions() {
             return [
@@ -180,8 +168,10 @@ export default {
             }
             params.display_per_page = this.displayPerPage
             params.current_page = this.currentPage
-            params.sorting_value = this.sorting.value
-            params.sorting_dir_desc = this.sorting.dir_desc
+            params.sorting_value =
+                this.$route.query.sort_value || this.sorting.value
+            params.sorting_dir_desc =
+                this.$route.query.sort_desc || this.sorting.dir_desc
             params.search_text = this.searchInput
             params.regions = this.regions
             params.only_valid_fide = this.onlyValidByFIDEelo
@@ -205,13 +195,20 @@ export default {
     },
     watch: {
         displayPerPage() {
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         sorting() {
-            this.currentPage = 1
-            this.$fetch()
+            this.$router.push({
+                query: {
+                    sort_value: this.sorting.value,
+                    sort_desc: this.sorting.dir_desc
+                }
+            })
+            this.updateValue()
         }
+    },
+    mounted() {
+        this.setParamsFromRouter()
     },
     methods: {
         prevPage() {
@@ -241,45 +238,49 @@ export default {
             }
             this.awaitingInput = true
         },
-        updateInput(value) {
-            this.searchInput = value
+        updateValue() {
             this.currentPage = 1
             this.$fetch()
+        },
+        updateInput(value) {
+            this.searchInput = value
+            this.updateValue()
         },
         updateMinDate(value) {
             this.minDate = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateMaxDate(value) {
             this.maxDate = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateMinDays(value) {
             this.minDays = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateMaxDays(value) {
             this.maxDays = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateRegions(value) {
             this.regions = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateValidFIDE(value) {
             this.onlyValidByFIDEelo = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
         },
         updateTimeControlType(value) {
             this.timeControlType = value
-            this.currentPage = 1
-            this.$fetch()
+            this.updateValue()
+        },
+        setParamsFromRouter() {
+            this.sorting.value = this.$route.query.sort_value
+                ? this.$route.query.sort_value
+                : 'start'
+            this.sorting.dir_desc = this.$route.query.sort_desc
+                ? this.$route.query.sort_desc
+                : false
         },
         cleanFilters() {
             this.searchInput = ''

@@ -111,7 +111,7 @@
                 <div class="filter-item max-date">
                     <label>
                         {{ $t('valid_fide_elo') }}
-                        <select v-model="validFIDEelo">
+                        <select v-model="onlyValidByFIDEelo">
                             <option value="">
                                 {{ $t('action.select_option') }}
                             </option>
@@ -177,7 +177,7 @@ export default {
             maxDate: '',
             minDays: '',
             maxDays: '',
-            validFIDEelo: '',
+            onlyValidByFIDEelo: '',
             timeControlType: '',
             regions: []
         }
@@ -362,7 +362,7 @@ export default {
                 this.maxDate === '' &&
                 this.minDays === '' &&
                 this.maxDays === '' &&
-                this.validFIDEelo === '' &&
+                this.onlyValidByFIDEelo === '' &&
                 this.timeControlType === '' &&
                 this.regions.length === 0
             )
@@ -394,7 +394,7 @@ export default {
                 this.$emit('newMaxDays', newValue)
             }
         },
-        validFIDEelo(newValue, oldValue) {
+        onlyValidByFIDEelo(newValue, oldValue) {
             if (newValue !== oldValue) {
                 this.$emit('newValidFIDE', newValue)
             }
@@ -420,7 +420,7 @@ export default {
             this.maxDate = ''
             this.minDays = ''
             this.maxDays = ''
-            this.validFIDEelo = ''
+            this.onlyValidByFIDEelo = ''
             this.timeControlType = ''
             this.regions = []
             this.$emit('cleanFilters')
