@@ -31,8 +31,16 @@
                 <IconRounds class="icon" />
                 {{ tournament.rounds }} {{ $t('rounds').toLowerCase() }}
             </span>
+            <span v-if="tournament.time_control.min" class="tournament-source">
+                <IconTime class="icon" />
+                {{ tournament.time_control.min }}
+                {{ $t('min').toLowerCase() }}
+                +
+                {{ tournament.time_control.sec }}
+                {{ $t('sec').toLowerCase() }}
+            </span>
             <span
-                v-if="tournament.time_control.value"
+                v-else-if="tournament.time_control.value"
                 class="tournament-source"
             >
                 <IconTime class="icon" />

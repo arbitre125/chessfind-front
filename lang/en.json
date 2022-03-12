@@ -11,6 +11,8 @@
     "standard": "Classic",
     "rapid": "Rapid",
     "blitz": "Blitz",
+    "min": "Min",
+    "sec": "Sec",
     "language": {
         "ca": "Catalan",
         "en": "English",
