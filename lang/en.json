@@ -24,7 +24,8 @@
         "clean_filters": "Clear filters",
         "yes": "Yes",
         "no": "No",
-        "go_back": "Go back"
+        "display_all": "Display all",
+        "display_less": "Display less"
     },
     "filter": {
         "tournaments": "Filter the tournaments",

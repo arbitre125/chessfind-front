@@ -138,6 +138,20 @@ button:hover {
     background-color: var(--color-primary-dark);
 }
 
+.secondary-btn {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    height: 36px;
+}
+
+.secondary-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
 footer {
     background-color: var(--color-primary);
     color: var(--color-white);

@@ -2,54 +2,56 @@
     <div>
         <Navbar :menu="false" />
         <div class="content-container">
-            <h1>{{ $t('title') }}</h1>
-            <div class="flex-grid search-box">
-                <input
-                    v-model="searchInput"
-                    type="text"
-                    :placeholder="$t('action.search') + '...'"
-                />
-            </div>
-            <div class="flex-grid search-box btn">
-                <div class="filter-item col">
-                    <label>
-                        {{ $t('filter.min_date') }}
-                        <input v-model="minDate" type="date" :min="today" />
-                    </label>
+            <div class="hero">
+                <h1>{{ $t('title') }}</h1>
+                <div class="flex-grid search-box">
+                    <input
+                        v-model="searchInput"
+                        type="text"
+                        :placeholder="$t('action.search') + '...'"
+                    />
                 </div>
-                <div class="filter-item col">
-                    <label>
-                        {{ $t('filter.max_date') }}
-                        <input
-                            v-model="maxDate"
-                            type="date"
-                            :min="minDate || today"
-                        />
-                    </label>
-                </div>
-                <div class="filter-item col">
-                    <label>
-                        {{ $t('filter.time_control') }}
-                        <select v-model="timeControlType">
-                            <option value="" selected>
-                                {{ $t('action.select_option') }}
-                            </option>
-                            <option value="standard">
-                                {{ $t('time_control.standard') }}
-                            </option>
-                            <option value="rapid">
-                                {{ $t('time_control.rapid') }}
-                            </option>
-                            <option value="blitz">
-                                {{ $t('time_control.blitz') }}
-                            </option>
-                        </select>
-                    </label>
-                </div>
-                <div class="filter-item col search-btn">
-                    <button @click="searchTournaments">
-                        {{ $t('action.search') }}
-                    </button>
+                <div class="flex-grid search-box btn">
+                    <div class="filter-item col">
+                        <label>
+                            {{ $t('filter.min_date') }}
+                            <input v-model="minDate" type="date" :min="today" />
+                        </label>
+                    </div>
+                    <div class="filter-item col">
+                        <label>
+                            {{ $t('filter.max_date') }}
+                            <input
+                                v-model="maxDate"
+                                type="date"
+                                :min="minDate || today"
+                            />
+                        </label>
+                    </div>
+                    <div class="filter-item col">
+                        <label>
+                            {{ $t('filter.time_control') }}
+                            <select v-model="timeControlType">
+                                <option value="" selected>
+                                    {{ $t('action.select_option') }}
+                                </option>
+                                <option value="standard">
+                                    {{ $t('time_control.standard') }}
+                                </option>
+                                <option value="rapid">
+                                    {{ $t('time_control.rapid') }}
+                                </option>
+                                <option value="blitz">
+                                    {{ $t('time_control.blitz') }}
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="filter-item col search-btn">
+                        <button @click="searchTournaments">
+                            {{ $t('action.search') }}
+                        </button>
+                    </div>
                 </div>
             </div>
             <section class="time-control flex-grid">
@@ -69,7 +71,10 @@
             </section>
             <section class="popular-time-control flex-grid">
                 <nuxt-link
-                    v-for="time in popularTimeControls"
+                    v-for="time in popularTimeControls.slice(
+                        0,
+                        maxDisplayTimeControls
+                    )"
                     :key="time.min + ' ' + time.sec"
                     :to="{
                         name: 'tournaments',
@@ -90,11 +95,21 @@
                         $t('sec').toLowerCase()
                     }}
                 </nuxt-link>
+                <button
+                    v-if="popularTimeControls.length > 5"
+                    class="secondary-btn"
+                    @click="showAllTimeControls = !showAllTimeControls"
+                >
+                    <span v-if="showAllTimeControls">{{
+                        $t('action.display_less')
+                    }}</span>
+                    <span v-else>{{ $t('action.display_all') }}</span>
+                </button>
             </section>
             <section class="time-control popular-time-control flex-grid">
                 <h2>{{ $t('play_in_fav.region') }}</h2>
                 <nuxt-link
-                    v-for="region in popularRegions"
+                    v-for="region in popularRegions.slice(0, maxDisplayRegions)"
                     :key="region"
                     :to="{
                         name: 'tournaments',
@@ -110,6 +125,16 @@
                     />
                     {{ $t(`region.${region}`) }}
                 </nuxt-link>
+                <button
+                    v-if="popularRegions.length > 5"
+                    class="secondary-btn"
+                    @click="showAllRegions = !showAllRegions"
+                >
+                    <span v-if="showAllRegions">{{
+                        $t('action.display_less')
+                    }}</span>
+                    <span v-else>{{ $t('action.display_all') }}</span>
+                </button>
             </section>
         </div>
         <Footer />
@@ -120,18 +145,23 @@
 export default {
     data() {
         return {
+            showAllTimeControls: false,
+            showAllRegions: false,
+            showAllCities: false,
             searchInput: '',
             minDate: '',
             maxDate: '',
             timeControlType: '',
-            timeControls: []
+            timeControls: [],
+            popularTimeControls: []
         }
     },
     async fetch() {
         await this.$axios
             .post(this.$config.apiURL + '/', this.getParams)
             .then((response) => {
-                this.assignTimeControls(response.data.time_control_types)
+                this.assignTimeControlsTypes(response.data.time_control_types)
+                this.assignTimeControlsValues(response.data.time_control_values)
             })
             .catch(() => {
                 this.error = true
@@ -141,17 +171,10 @@ export default {
         today() {
             return new Date().toISOString().split('T')[0]
         },
-        popularTimeControls() {
-            return [
-                { min: 90, sec: 30 },
-                { min: 3, sec: 2 },
-                { min: 15, sec: 5 },
-                { min: 10, sec: 0 },
-                { min: 60, sec: 0 }
-            ]
-        },
-        continents() {
-            return ['eu', 'na', 'sa', 'as', 'af', 'oc']
+        maxDisplayTimeControls() {
+            return this.showAllTimeControls
+                ? this.popularTimeControls.length
+                : 5
         },
         popularRegions() {
             return [
@@ -166,15 +189,44 @@ export default {
                 'gre',
                 'sui'
             ]
+        },
+        maxDisplayRegions() {
+            return this.showAllRegions ? this.popularRegions.length : 5
+        },
+        popularCities() {
+            return [
+                'barcelona',
+                'madrid',
+                'vienna',
+                'london',
+                'reykjavik',
+                'new york',
+                'tel aviv',
+                'tbilisi',
+                'tokyo',
+                'baki'
+            ]
+        },
+        maxDisplayCities() {
+            return this.showAllCities ? this.popularCities.length : 5
         }
     },
     methods: {
-        assignTimeControls(value) {
+        assignTimeControlsTypes(value) {
             for (const time of value) {
                 this.timeControls.push({
                     display: time[0],
                     count: time[1],
                     url: time[0] === 'all' ? '' : time[0]
+                })
+            }
+        },
+        assignTimeControlsValues(value) {
+            for (const time of value) {
+                const s = time[0].split('+')
+                this.popularTimeControls.push({
+                    min: s[0].replace(/[^\d.]/g, ''),
+                    sec: s[1].replace(/[^\d.]/g, '')
                 })
             }
         },
@@ -249,11 +301,15 @@ h6 {
     justify-content: flex-end;
 }
 
+.hero {
+    margin-bottom: 80px;
+}
+
 section {
     margin: 20px 0;
 }
 section.time-control {
-    margin-top: 60px;
+    margin-top: 40px;
 }
 
 .card-time-control,
@@ -301,6 +357,10 @@ section.time-control {
 
 input,
 select {
+    width: 100%;
+}
+
+.secondary-btn {
     width: 100%;
 }
 </style>

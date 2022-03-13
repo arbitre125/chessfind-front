@@ -24,7 +24,8 @@
         "clean_filters": "Resetear filtros",
         "yes": "Sí",
         "no": "No",
-        "go_back": "Volver"
+        "display_all": "Mostrar todos",
+        "display_less": "Mostrar menos"
     },
     "filter": {
         "regions": "Regiones",
