@@ -346,6 +346,10 @@ section.time-control {
     gap: 8px;
 }
 
+.popular-time-control h2 {
+    margin-bottom: 8px;
+}
+
 .chip-time-control {
     font-size: 16px;
     min-width: 160px;
