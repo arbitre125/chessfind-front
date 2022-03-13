@@ -91,28 +91,14 @@
                     }}
                 </nuxt-link>
             </section>
-            <!--
-            <section class="time-control flex-grid">
+            <section class="time-control popular-time-control flex-grid">
                 <h2>{{ $t('play_in_fav.region') }}</h2>
-                <nuxt-link
-                    v-for="continent in continents"
-                    :key="continent"
-                    :to="{
-                        name: 'tournaments',
-                        params: { continent: continent }
-                    }"
-                    class="col card-time-control"
-                >
-                    {{ $t(`region.${continent}`) }}
-                </nuxt-link>
-            </section>
-            <section class="popular-time-control flex-grid">
                 <nuxt-link
                     v-for="region in popularRegions"
                     :key="region"
                     :to="{
                         name: 'tournaments',
-                        params: { regions: ['CAT'] }
+                        params: { regions: [region] }
                     }"
                     class="col chip-time-control"
                 >
@@ -125,7 +111,6 @@
                     {{ $t(`region.${region}`) }}
                 </nuxt-link>
             </section>
-            -->
         </div>
         <Footer />
     </div>

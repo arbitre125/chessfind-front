@@ -814,12 +814,18 @@ export default {
                     : ''
                 this.$route.params.time_control_type = ''
             }
-            if (this.$route.params.time_control_min !== undefined) {
+            if (
+                this.$route.params.time_control_min !== undefined &&
+                this.$route.params.time_control_min !== ''
+            ) {
                 this.timeControlMin =
                     this.$route.params.time_control_min.toString()
                 this.$route.params.time_control_min = ''
             }
-            if (this.$route.params.time_control_sec !== undefined) {
+            if (
+                this.$route.params.time_control_sec !== undefined &&
+                this.$route.params.time_control_sec !== ''
+            ) {
                 this.timeControlSec =
                     this.$route.params.time_control_sec.toString()
                 this.$route.params.time_control_sec = ''
