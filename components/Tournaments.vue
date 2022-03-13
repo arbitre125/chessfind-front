@@ -943,6 +943,7 @@ h2 {
         width: 96%;
         padding-right: 4%;
         border-radius: 0;
+        padding-bottom: 20px;
     }
 }
 
