@@ -232,8 +232,10 @@ export default {
 }
 
 .content-container {
-    padding: 2px 20px;
+    padding: 2px 0;
     display: flex;
+    width: 92%;
+    margin: 0 4%;
 }
 
 .navbar-logo {

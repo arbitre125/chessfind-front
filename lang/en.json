@@ -16,7 +16,7 @@
     "error": {
         "error_found": "An error occurred",
         "page_not_found": "Page not found",
-        "no_result_found": "No result found"
+        "no_result_found": "No results found"
     },
     "action": {
         "search": "Search",
