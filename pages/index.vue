@@ -163,7 +163,7 @@ export default {
                 { min: 3, sec: 2 },
                 { min: 15, sec: 5 },
                 { min: 10, sec: 0 },
-                { min: 40, sec: 0 }
+                { min: 60, sec: 0 }
             ]
         },
         continents() {
