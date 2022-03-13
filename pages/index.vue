@@ -8,10 +8,9 @@
                     v-model="searchInput"
                     type="text"
                     :placeholder="$t('action.search') + '...'"
-                    class="col"
                 />
             </div>
-            <div class="flex-grid search-box">
+            <div class="flex-grid search-box btn">
                 <div class="filter-item col">
                     <label>
                         {{ $t('filter.min_date') }}
@@ -244,11 +243,18 @@ h6 {
 }
 
 .search-box {
-    max-width: 800px;
+    width: 800px;
+    max-width: 100%;
 }
 
 .search-box input {
     max-width: 600px;
+}
+
+@media only screen and (max-width: 768px) {
+    .search-box.btn {
+        flex-direction: column;
+    }
 }
 
 .search-btn {
