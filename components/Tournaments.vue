@@ -42,18 +42,20 @@
                 </div>
                 <div class="filter time">
                     <label>
-                        {{ $t('min') }}
+                        {{ $t('filter.time_min') }}
                         <input
                             v-model="timeControlMin"
+                            :placeholder="$t('minuts')"
                             type="number"
                             :min="0"
                             :disabled="loading"
                         />
                     </label>
                     <label>
-                        {{ $t('sec') }}
+                        {{ $t('filter.time_sec') }}
                         <input
                             v-model="timeControlSec"
+                            :placeholder="$t('seconds')"
                             type="number"
                             :min="0"
                             :disabled="loading"
@@ -87,6 +89,7 @@
                         {{ $t('filter.min_days') }}
                         <input
                             v-model="minDays"
+                            placeholder="1"
                             type="number"
                             :min="0"
                             :disabled="loading"
@@ -98,6 +101,7 @@
                         {{ $t('filter.max_days') }}
                         <input
                             v-model="maxDays"
+                            placeholder="14"
                             type="number"
                             :min="minDays"
                             :disabled="loading"
@@ -196,18 +200,20 @@
                 </div>
                 <div class="filter time">
                     <label>
-                        {{ $t('min') }}
+                        {{ $t('filter.time_min') }}
                         <input
                             v-model="timeControlMin"
+                            :placeholder="$t('minuts')"
                             type="number"
                             :min="0"
                             :disabled="loading"
                         />
                     </label>
                     <label>
-                        {{ $t('sec') }}
+                        {{ $t('filter.time_sec') }}
                         <input
                             v-model="timeControlSec"
+                            :placeholder="$t('seconds')"
                             type="number"
                             :min="0"
                             :disabled="loading"
@@ -241,6 +247,7 @@
                         {{ $t('filter.min_days') }}
                         <input
                             v-model="minDays"
+                            placeholder="1"
                             type="number"
                             :min="0"
                             :disabled="loading"
@@ -252,6 +259,7 @@
                         {{ $t('filter.max_days') }}
                         <input
                             v-model="maxDays"
+                            placeholder="14"
                             type="number"
                             :min="minDays"
                             :disabled="loading"

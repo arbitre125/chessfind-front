@@ -9,6 +9,8 @@
     "average_elo": "Average elo",
     "min": "Min",
     "sec": "Sec",
+    "minuts": "Minuts",
+    "seconds": "Seconds",
     "language": {
         "en": "English",
         "es": "Spanish"
@@ -29,12 +31,14 @@
     },
     "filter": {
         "tournaments": "Filter the tournaments",
-        "regions": "Regions",
-        "min_date": "Start date",
-        "max_date": "End date",
+        "time_control": "Time control",
+        "time_min": "Initial time",
+        "time_sec": "Increment",
+        "min_date": "Min. start date",
+        "max_date": "Max. end date",
         "min_days": "Min. days duration",
         "max_days": "Max. days duration",
-        "time_control": "Time control"
+        "regions": "Regions"
     },
     "play_in_fav": {
         "time_control": "Play your favorite time control",
