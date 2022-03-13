@@ -15,12 +15,7 @@
                 <div class="filter-item col">
                     <label>
                         {{ $t('filter.min_date') }}
-                        <input
-                            v-model="minDate"
-                            type="date"
-                            :min="today"
-                            :disabled="loading"
-                        />
+                        <input v-model="minDate" type="date" :min="today" />
                     </label>
                 </div>
                 <div class="filter-item col">
@@ -30,7 +25,6 @@
                             v-model="maxDate"
                             type="date"
                             :min="minDate || today"
-                            :disabled="loading"
                         />
                     </label>
                 </div>
@@ -54,7 +48,7 @@
                     </label>
                 </div>
                 <div class="filter-item col search-btn">
-                    <button>
+                    <button @click="searchTournaments">
                         {{ $t('action.search') }}
                     </button>
                 </div>
@@ -77,7 +71,7 @@
             <section class="popular-time-control flex-grid">
                 <nuxt-link
                     v-for="time in popularTimeControls"
-                    :key="time"
+                    :key="time.min + ' ' + time.sec"
                     :to="{
                         name: 'tournaments',
                         params: {
@@ -98,9 +92,9 @@
                     }}
                 </nuxt-link>
             </section>
+            <!--
             <section class="time-control flex-grid">
                 <h2>{{ $t('play_in_fav.region') }}</h2>
-                <!--
                 <nuxt-link
                     v-for="continent in continents"
                     :key="continent"
@@ -112,7 +106,6 @@
                 >
                     {{ $t(`region.${continent}`) }}
                 </nuxt-link>
-                -->
             </section>
             <section class="popular-time-control flex-grid">
                 <nuxt-link
@@ -120,7 +113,7 @@
                     :key="region"
                     :to="{
                         name: 'tournaments',
-                        params: { region: region }
+                        params: { regions: ['CAT'] }
                     }"
                     class="col chip-time-control"
                 >
@@ -133,6 +126,7 @@
                     {{ $t(`region.${region}`) }}
                 </nuxt-link>
             </section>
+            -->
         </div>
         <Footer />
     </div>
@@ -149,7 +143,20 @@ export default {
             timeControls: []
         }
     },
+    async fetch() {
+        await this.$axios
+            .post(this.$config.apiURL + '/', this.getParams)
+            .then((response) => {
+                this.assignTimeControls(response.data.time_control_types)
+            })
+            .catch(() => {
+                this.error = true
+            })
+    },
     computed: {
+        today() {
+            return new Date().toISOString().split('T')[0]
+        },
         popularTimeControls() {
             return [
                 { min: 90, sec: 30 },
@@ -177,13 +184,27 @@ export default {
             ]
         }
     },
-    mounted() {
-        this.timeControls = [
-            { display: 'all', count: 0, url: '' },
-            { display: 'standard', count: 0, url: 'standard' },
-            { display: 'rapid', count: 0, url: 'rapid' },
-            { display: 'blitz', count: 0, url: 'blitz' }
-        ]
+    methods: {
+        assignTimeControls(value) {
+            for (const time of value) {
+                this.timeControls.push({
+                    display: time[0],
+                    count: time[1],
+                    url: time[0] === 'all' ? '' : time[0]
+                })
+            }
+        },
+        searchTournaments() {
+            this.$router.push({
+                name: 'tournaments',
+                params: {
+                    search_input: this.searchInput,
+                    min_date: this.minDate,
+                    max_date: this.maxDate,
+                    time_control_type: this.timeControlType
+                }
+            })
+        }
     }
 }
 </script>
@@ -203,6 +224,10 @@ h3,
 h6 {
     font-weight: 500;
     margin: 2px 0;
+}
+
+.content-container {
+    min-height: calc(100vh - 130px);
 }
 
 .flex-grid {

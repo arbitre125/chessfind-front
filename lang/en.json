@@ -41,7 +41,7 @@
         "city": "Play in your favorite city"
     },
     "time_control": {
-        "standard": "Classic",
+        "standard": "Standard",
         "rapid": "Rapid",
         "blitz": "Blitz",
         "all": "All controls"

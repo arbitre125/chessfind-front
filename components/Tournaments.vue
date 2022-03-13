@@ -39,6 +39,26 @@
                         </select>
                     </label>
                 </div>
+                <div class="filter time">
+                    <label>
+                        {{ $t('min') }}
+                        <input
+                            v-model="timeControlMin"
+                            type="number"
+                            :min="0"
+                            :disabled="loading"
+                        />
+                    </label>
+                    <label>
+                        {{ $t('sec') }}
+                        <input
+                            v-model="timeControlSec"
+                            type="number"
+                            :min="0"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
                 <div class="filter">
                     <label>
                         {{ $t('filter.min_date') }}
@@ -167,6 +187,26 @@
                                 {{ $t('time_control.blitz') }}
                             </option>
                         </select>
+                    </label>
+                </div>
+                <div class="filter time">
+                    <label>
+                        {{ $t('min') }}
+                        <input
+                            v-model="timeControlMin"
+                            type="number"
+                            :min="0"
+                            :disabled="loading"
+                        />
+                    </label>
+                    <label>
+                        {{ $t('sec') }}
+                        <input
+                            v-model="timeControlSec"
+                            type="number"
+                            :min="0"
+                            :disabled="loading"
+                        />
                     </label>
                 </div>
                 <div class="filter">
@@ -371,12 +411,16 @@ export default {
             displayRegions: [],
             onlyValidByFIDEelo: '',
             timeControlType: '',
+            timeControlMin: '',
+            timeControlSec: '',
             awaitingInput: false,
             displayMobileMenu: false
         }
     },
     async fetch() {
         this.loading = true
+
+        this.setParamsFromRouter()
 
         await this.$axios
             .post(this.$config.apiURL + '/tournaments', this.getParams)
@@ -616,6 +660,8 @@ export default {
             params.regions = this.regions
             params.only_valid_fide = this.onlyValidByFIDEelo
             params.time_control_type = this.timeControlType
+            params.time_control_min = this.timeControlMin
+            params.time_control_sec = this.timeControlSec
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -641,6 +687,8 @@ export default {
                 this.maxDays === '' &&
                 this.onlyValidByFIDEelo === '' &&
                 this.timeControlType === '' &&
+                this.timeControlMin === '' &&
+                this.timeControlSec === '' &&
                 this.displayRegions.length === 0
             )
         }
@@ -679,14 +727,17 @@ export default {
         timeControlType() {
             this.updateValue()
         },
+        timeControlMin() {
+            this.updateValue()
+        },
+        timeControlSec() {
+            this.updateValue()
+        },
         displayRegions(newValue) {
             const valueCodes = newValue.map((res) => res.code)
             this.regions = [...new Set(valueCodes)]
             this.updateValue()
         }
-    },
-    mounted() {
-        this.setParamsFromRouter()
     },
     methods: {
         displayMenu(value) {
@@ -730,6 +781,43 @@ export default {
             this.sorting.dir_desc = this.$route.query.sort_desc
                 ? this.$route.query.sort_desc
                 : false
+
+            if (this.$route.params.search_input !== '') {
+                this.searchInput = this.$route.params.search_input
+                    ? this.$route.params.search_input
+                    : ''
+                this.$route.params.search_input = ''
+            }
+            if (this.$route.params.min_date !== '') {
+                this.minDate = this.$route.params.min_date
+                    ? this.$route.params.min_date
+                    : ''
+                this.$route.params.min_date = ''
+            }
+            if (this.$route.params.max_date !== '') {
+                this.maxDate = this.$route.params.max_date
+                    ? this.$route.params.max_date
+                    : ''
+                this.$route.params.max_date = ''
+            }
+            if (this.$route.params.time_control_type !== '') {
+                this.timeControlType = this.$route.params.time_control_type
+                    ? this.$route.params.time_control_type
+                    : ''
+                this.$route.params.time_control_type = ''
+            }
+            if (this.$route.params.time_control_min !== '') {
+                this.timeControlMin = this.$route.params.time_control_min
+                    ? this.$route.params.time_control_min
+                    : ''
+                this.$route.params.time_control_min = ''
+            }
+            if (this.$route.params.time_control_sec !== '') {
+                this.timeControlSec = this.$route.params.time_control_sec
+                    ? this.$route.params.time_control_sec
+                    : ''
+                this.$route.params.time_control_sec = ''
+            }
         },
         cleanFilters() {
             this.searchInput = ''
@@ -739,6 +827,8 @@ export default {
             this.maxDays = ''
             this.onlyValidByFIDEelo = ''
             this.timeControlType = ''
+            this.timeControlMin = ''
+            this.timeControlSec = ''
             this.displayRegions = []
             this.regions = []
             this.updateValue()
@@ -857,6 +947,19 @@ h2 {
 .filter {
     margin-top: 16px;
     margin-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter.time {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+    margin-right: 16px;
+}
+
+.filter.time label {
+    flex: 1 0 50%;
 }
 
 .filter input,
@@ -876,7 +979,8 @@ h2 {
 }
 
 label input,
-label select {
+label select,
+label .multiselect {
     margin-top: 4px;
 }
 
