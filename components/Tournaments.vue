@@ -18,12 +18,13 @@
                         type="text"
                         :placeholder="$t('action.search') + '...'"
                         class="filter"
+                        :disabled="loading"
                     />
                 </div>
                 <div class="filter">
                     <label>
                         {{ $t('filter.time_control') }}
-                        <select v-model="timeControlType">
+                        <select v-model="timeControlType" :disabled="loading">
                             <option value="" selected>
                                 {{ $t('action.select_option') }}
                             </option>
@@ -106,7 +107,10 @@
                 <div class="filter">
                     <label>
                         {{ $t('valid_fide_elo') }}
-                        <select v-model="onlyValidByFIDEelo">
+                        <select
+                            v-model="onlyValidByFIDEelo"
+                            :disabled="loading"
+                        >
                             <option value="">
                                 {{ $t('action.select_option') }}
                             </option>
@@ -168,13 +172,14 @@
                         type="text"
                         :placeholder="$t('action.search') + '...'"
                         class="filter"
+                        :disabled="loading"
                     />
                 </div>
                 <div class="filter">
                     <label>
                         {{ $t('filter.time_control') }}
-                        <select v-model="timeControlType">
-                            <option value="" selected>
+                        <select v-model="timeControlType" :disabled="loading">
+                            <option value="">
                                 {{ $t('action.select_option') }}
                             </option>
                             <option value="standard">
@@ -256,7 +261,10 @@
                 <div class="filter">
                     <label>
                         {{ $t('valid_fide_elo') }}
-                        <select v-model="onlyValidByFIDEelo">
+                        <select
+                            v-model="onlyValidByFIDEelo"
+                            :disabled="loading"
+                        >
                             <option value="">
                                 {{ $t('action.select_option') }}
                             </option>
