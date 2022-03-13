@@ -28,6 +28,7 @@
         "display_less": "Mostrar menos"
     },
     "filter": {
+        "tournaments": "Filtra los torneos",
         "regions": "Regiones",
         "min_date": "Fecha inicial",
         "max_date": "Fecha final",

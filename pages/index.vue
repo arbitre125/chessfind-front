@@ -142,6 +142,8 @@
 </template>
 
 <script>
+import { getCountries } from '../utils/filters'
+
 export default {
     data() {
         return {
@@ -153,7 +155,8 @@ export default {
             maxDate: '',
             timeControlType: '',
             timeControls: [],
-            popularTimeControls: []
+            popularTimeControls: [],
+            popularRegions: []
         }
     },
     async fetch() {
@@ -162,6 +165,7 @@ export default {
             .then((response) => {
                 this.assignTimeControlsTypes(response.data.time_control_types)
                 this.assignTimeControlsValues(response.data.time_control_values)
+                this.assignRegions(response.data.regions)
             })
             .catch(() => {
                 this.error = true
@@ -175,20 +179,6 @@ export default {
             return this.showAllTimeControls
                 ? this.popularTimeControls.length
                 : 5
-        },
-        popularRegions() {
-            return [
-                'esp',
-                'cat',
-                'and',
-                'por',
-                'fra',
-                'ger',
-                'ita',
-                'eng',
-                'gre',
-                'sui'
-            ]
         },
         maxDisplayRegions() {
             return this.showAllRegions ? this.popularRegions.length : 5
@@ -212,6 +202,10 @@ export default {
         }
     },
     methods: {
+        isFedSupported(region) {
+            const fed = region.toUpperCase()
+            return getCountries().includes(fed)
+        },
         assignTimeControlsTypes(value) {
             for (const time of value) {
                 this.timeControls.push({
@@ -228,6 +222,13 @@ export default {
                     min: s[0].replace(/[^\d.]/g, ''),
                     sec: s[1].replace(/[^\d.]/g, '')
                 })
+            }
+        },
+        assignRegions(value) {
+            for (const region of value) {
+                if (this.isFedSupported(region[0])) {
+                    this.popularRegions.push(region[0].toLowerCase())
+                }
             }
         },
         searchTournaments() {

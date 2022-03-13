@@ -715,6 +715,15 @@ export default {
             this.updateValue()
         },
         searchInput() {
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
+        },
+        timeControlType() {
             this.updateValue()
         },
         minDate() {
@@ -724,22 +733,43 @@ export default {
             this.updateValue()
         },
         minDays() {
-            this.updateValue()
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
         },
         maxDays() {
-            this.updateValue()
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
         },
         onlyValidByFIDEelo() {
             this.updateValue()
         },
-        timeControlType() {
-            this.updateValue()
-        },
         timeControlMin() {
-            this.updateValue()
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
         },
         timeControlSec() {
-            this.updateValue()
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
         },
         displayRegions(newValue) {
             const valueCodes = newValue.map((res) => res.code)
