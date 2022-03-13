@@ -1,8 +1,146 @@
 <template>
     <div>
-        <Navbar />
+        <Navbar @displayMenu="displayMenu" />
         <div class="content">
             <div class="content-filters desktop">
+                <div class="mobile langs">
+                    <select v-model="$i18n.locale">
+                        <option v-for="lang in langs" :key="lang" :value="lang">
+                            {{ $t(`language.${lang}`) }}
+                        </option>
+                    </select>
+                </div>
+
+                <h2>{{ $t('filter.tournaments') }}</h2>
+                <div class="filter">
+                    <input
+                        v-model="searchInput"
+                        type="text"
+                        :placeholder="$t('action.search') + '...'"
+                        class="filter"
+                    />
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.time_control') }}
+                        <select v-model="timeControlType">
+                            <option value="" selected>
+                                {{ $t('action.select_option') }}
+                            </option>
+                            <option value="standard">
+                                {{ $t('time_control.standard') }}
+                            </option>
+                            <option value="rapid">
+                                {{ $t('time_control.rapid') }}
+                            </option>
+                            <option value="blitz">
+                                {{ $t('time_control.blitz') }}
+                            </option>
+                        </select>
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.min_date') }}
+                        <input
+                            v-model="minDate"
+                            type="date"
+                            :min="today"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.max_date') }}
+                        <input
+                            v-model="maxDate"
+                            type="date"
+                            :min="minDate"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.min_days') }}
+                        <input
+                            v-model="minDays"
+                            type="number"
+                            :min="0"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.max_days') }}
+                        <input
+                            v-model="maxDays"
+                            type="number"
+                            :min="minDays"
+                            :disabled="loading"
+                        />
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('valid_fide_elo') }}
+                        <select v-model="onlyValidByFIDEelo">
+                            <option value="">
+                                {{ $t('action.select_option') }}
+                            </option>
+                            <option value="0">{{ $t('action.no') }}</option>
+                            <option value="1">{{ $t('action.yes') }}</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('filter.regions') }}
+                        <multiselect
+                            v-model="displayRegions"
+                            :placeholder="
+                                $t('action.search') +
+                                ' ' +
+                                $t('filter.regions').toLowerCase()
+                            "
+                            label="name"
+                            track-by="code"
+                            group-label="region"
+                            group-values="countries"
+                            :group-select="true"
+                            :options="filterRegions"
+                            :multiple="true"
+                            :close-on-select="true"
+                            :hide-selected="true"
+                            :disabled="loading"
+                        >
+                            <span slot="noResult"
+                                >{{ $t('error.no_result_found') }}.</span
+                            >
+                        </multiselect>
+                    </label>
+                </div>
+                <div class="filter">
+                    <button
+                        class="clean"
+                        :disabled="emptyFilters || loading"
+                        @click="cleanFilters"
+                    >
+                        {{ $t('action.clean_filters') }}
+                    </button>
+                </div>
+            </div>
+            <div v-if="displayMobileMenu" class="content-filters mobile">
+                <div class="mobile langs">
+                    <select v-model="$i18n.locale">
+                        <option v-for="lang in langs" :key="lang" :value="lang">
+                            {{ $t(`language.${lang}`) }}
+                        </option>
+                    </select>
+                </div>
+
                 <h2>{{ $t('filter.tournaments') }}</h2>
                 <div class="filter">
                     <input
@@ -233,7 +371,8 @@ export default {
             displayRegions: [],
             onlyValidByFIDEelo: '',
             timeControlType: '',
-            awaitingInput: false
+            awaitingInput: false,
+            displayMobileMenu: false
         }
     },
     async fetch() {
@@ -252,6 +391,9 @@ export default {
             })
     },
     computed: {
+        langs() {
+            return ['en', 'es']
+        },
         today() {
             return new Date().toISOString().split('T')[0]
         },
@@ -336,6 +478,7 @@ export default {
                         { name: this.$t('region.blr'), code: 'BLR' },
                         { name: this.$t('region.bih'), code: 'BIH' },
                         { name: this.$t('region.bul'), code: 'BUL' },
+                        { name: this.$t('region.cat'), code: 'CAT' },
                         { name: this.$t('region.cro'), code: 'CRO' },
                         { name: this.$t('region.cyp'), code: 'CYP' },
                         { name: this.$t('region.cze'), code: 'CZE' },
@@ -546,6 +689,9 @@ export default {
         this.setParamsFromRouter()
     },
     methods: {
+        displayMenu(value) {
+            this.displayMobileMenu = value
+        },
         prevPage() {
             if (this.currentPage > 0) {
                 this.currentPage -= 1
@@ -684,11 +830,26 @@ h2 {
     display: flex;
     gap: 32px;
 }
+
 .content-filters {
     width: 400px;
     border-radius: 8px;
     padding: 4px 0;
 }
+
+@media only screen and (max-width: 769px) {
+    .content-filters {
+        overflow: hidden;
+        position: absolute;
+        top: 60px;
+        background-color: var(--color-background);
+        height: 100vh;
+        width: 96%;
+        padding-right: 4%;
+        border-radius: 0;
+    }
+}
+
 .content-tournaments {
     width: 100%;
 }
@@ -717,5 +878,12 @@ h2 {
 label input,
 label select {
     margin-top: 4px;
+}
+
+.langs {
+    margin-bottom: 20px;
+}
+.langs select {
+    width: 100%;
 }
 </style>

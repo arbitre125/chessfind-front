@@ -20,6 +20,7 @@ export function getCountries() {
         'BRN',
         'BUL',
         'CAN',
+        'CAT',
         'CHI',
         'CHN',
         'CIV',

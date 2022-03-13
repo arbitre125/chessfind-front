@@ -5,10 +5,19 @@
                 <Logo class="navbar-logo" />
             </nuxt-link>
             <div class="navbar-right mobile">
-                <div class="icon-menu" @click="displayMenu = !displayMenu">
+                <div
+                    v-if="menu"
+                    class="icon-menu"
+                    @click="displayMenu = !displayMenu"
+                >
                     <IconClose v-if="displayMenu" />
                     <IconMenu v-else />
                 </div>
+                <select v-else v-model="$i18n.locale">
+                    <option v-for="lang in langs" :key="lang" :value="lang">
+                        {{ $t(`language.${lang}`) }}
+                    </option>
+                </select>
             </div>
             <div class="navbar-right desktop">
                 <select v-model="$i18n.locale">
@@ -34,6 +43,10 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        },
+        menu: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
@@ -216,6 +229,11 @@ export default {
                     ]
                 }
             ]
+        }
+    },
+    watch: {
+        displayMenu() {
+            this.$emit('displayMenu', this.displayMenu)
         }
     }
 }

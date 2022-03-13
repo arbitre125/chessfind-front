@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Navbar />
+        <Navbar :menu="false" />
         <div class="content-container">
             <h1>{{ $t('title') }}</h1>
             <div class="flex-grid search-box">
@@ -63,14 +63,15 @@
                 <h2>{{ $t('play_in_fav.time_control') }}</h2>
                 <nuxt-link
                     v-for="time in timeControls"
-                    :key="time"
+                    :key="time.display"
                     :to="{
                         name: 'tournaments',
-                        params: { time_control_type: time }
+                        params: { time_control_type: time.url }
                     }"
                     class="col card-time-control"
                 >
-                    {{ $t(`time_control.${time}`) }}
+                    <h3>{{ $t(`time_control.${time.display}`) }}</h3>
+                    <h6>{{ time.count }} {{ $t('results').toLowerCase() }}</h6>
                 </nuxt-link>
             </section>
             <section class="popular-time-control flex-grid">
@@ -99,6 +100,7 @@
             </section>
             <section class="time-control flex-grid">
                 <h2>{{ $t('play_in_fav.region') }}</h2>
+                <!--
                 <nuxt-link
                     v-for="continent in continents"
                     :key="continent"
@@ -110,6 +112,7 @@
                 >
                     {{ $t(`region.${continent}`) }}
                 </nuxt-link>
+                -->
             </section>
             <section class="popular-time-control flex-grid">
                 <nuxt-link
@@ -131,11 +134,7 @@
                 </nuxt-link>
             </section>
         </div>
-        <footer>
-            <div class="content-container">
-                {{ new Date().getFullYear() }} {{ $t('footer.copyright') }}
-            </div>
-        </footer>
+        <Footer />
     </div>
 </template>
 
@@ -146,13 +145,11 @@ export default {
             searchInput: '',
             minDate: '',
             maxDate: '',
-            timeControlType: ''
+            timeControlType: '',
+            timeControls: []
         }
     },
     computed: {
-        timeControls() {
-            return ['standard', 'rapid', 'blitz', 'all']
-        },
         popularTimeControls() {
             return [
                 { min: 90, sec: 30 },
@@ -179,6 +176,14 @@ export default {
                 'sui'
             ]
         }
+    },
+    mounted() {
+        this.timeControls = [
+            { display: 'all', count: 0, url: '' },
+            { display: 'standard', count: 0, url: 'standard' },
+            { display: 'rapid', count: 0, url: 'rapid' },
+            { display: 'blitz', count: 0, url: 'blitz' }
+        ]
     }
 }
 </script>
@@ -193,6 +198,11 @@ h1 {
     margin: 32px 8px;
     text-align: center;
     color: var(--color-primary);
+}
+h3,
+h6 {
+    font-weight: 500;
+    margin: 2px 0;
 }
 
 .flex-grid {
@@ -265,7 +275,6 @@ section.time-control {
 
 .chip-time-control {
     font-size: 16px;
-    margin-bottom: 16px;
     min-width: 160px;
 }
 
