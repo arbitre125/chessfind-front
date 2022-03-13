@@ -830,6 +830,20 @@ export default {
                     this.$route.params.time_control_sec.toString()
                 this.$route.params.time_control_sec = ''
             }
+            if (
+                this.$route.params.regions !== undefined &&
+                this.$route.params.regions !== ''
+            ) {
+                this.regions = this.$route.params.regions
+                const region = this.regions[0]
+                this.displayRegions = [
+                    {
+                        name: this.$t(`region.${region.toLowerCase()}`),
+                        code: region.toUpperCase()
+                    }
+                ]
+                this.$route.params.regions = ''
+            }
         },
         cleanFilters() {
             this.searchInput = ''

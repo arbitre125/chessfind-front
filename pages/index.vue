@@ -98,7 +98,7 @@
                     :key="region"
                     :to="{
                         name: 'tournaments',
-                        params: { regions: [region] }
+                        params: { regions: [region.toUpperCase()] }
                     }"
                     class="col chip-time-control"
                 >
