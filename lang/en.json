@@ -1,5 +1,5 @@
 {
-    "title": "Find all chess tournaments around the world",
+    "title": "Find chess tournaments around the world",
     "home": "Home",
     "tournaments": "Tournaments",
     "results": "Results",
@@ -8,13 +8,9 @@
     "sort_by": "Sort by",
     "valid_fide_elo": "Valid for FIDE elo",
     "average_elo": "Average elo",
-    "standard": "Classic",
-    "rapid": "Rapid",
-    "blitz": "Blitz",
     "min": "Min",
     "sec": "Sec",
     "language": {
-        "ca": "Catalan",
         "en": "English",
         "es": "Spanish"
     },
@@ -28,15 +24,31 @@
         "select_option": "Select option",
         "clean_filters": "Clear filters",
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+        "go_back": "Go back"
     },
     "filter": {
+        "tournaments": "Filter the tournaments",
         "regions": "Regions",
         "min_date": "Start date",
         "max_date": "End date",
         "min_days": "Min. days duration",
         "max_days": "Max. days duration",
         "time_control": "Time control"
+    },
+    "play_in_fav": {
+        "time_control": "Play your favorite time control",
+        "region": "Play in your favorite region",
+        "city": "Play in your favorite city"
+    },
+    "time_control": {
+        "standard": "Classic",
+        "rapid": "Rapid",
+        "blitz": "Blitz",
+        "all": "All controls"
+    },
+    "footer": {
+        "copyright": "© chessfind.com. All rights reserved."
     },
     "region": {
         "af": "Africa",
@@ -69,6 +81,7 @@
         "brn": "Bahrain",
         "bul": "Bulgaria",
         "can": "Canada",
+        "cat": "Catalonia",
         "chi": "Chile",
         "chn": "China",
         "civ": "Ivory Coast",

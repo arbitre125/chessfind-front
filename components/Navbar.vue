@@ -1,167 +1,34 @@
 <template>
     <div class="navbar">
         <div class="content-container">
-            <Logo class="navbar-logo" />
+            <nuxt-link to="/">
+                <Logo class="navbar-logo" />
+            </nuxt-link>
             <div class="navbar-right mobile">
-                <div class="icon-menu" @click="displayFilter = !displayFilter">
-                    <IconClose v-if="displayFilter" />
-                    <div v-else>
-                        <IconMenu />
-                        <div v-if="!emptyFilters" class="active-filter"></div>
-                    </div>
+                <div class="icon-menu" @click="displayMenu = !displayMenu">
+                    <IconClose v-if="displayMenu" />
+                    <IconMenu v-else />
                 </div>
             </div>
             <div class="navbar-right desktop">
-                <input
-                    v-model="searchInput"
-                    type="text"
-                    :placeholder="$t('action.search') + '...'"
-                    class="navbar-search"
-                />
-                <button
-                    class="navbar-filter display"
-                    @click="displayFilter = !displayFilter"
-                >
-                    <div v-if="displayFilter" class="close-filter">
-                        <IconClose />
-                    </div>
-                    <div v-else class="open-filter">
-                        <IconFilter />
-                        <div v-if="!emptyFilters" class="active-filter"></div>
-                    </div>
-                </button>
-            </div>
-        </div>
-        <div v-if="displayFilter" class="content-container">
-            <div class="tournaments-filter">
-                <input
-                    v-model="searchInput"
-                    type="text"
-                    :placeholder="$t('action.search') + '...'"
-                    class="search-menu mobile"
-                    :disabled="loading"
-                />
-
-                <div class="filter-item regions">
-                    <label>
-                        {{ $t('filter.regions') }}
-                        <multiselect
-                            v-model="regions"
-                            placeholder="Search region"
-                            label="name"
-                            track-by="code"
-                            group-label="region"
-                            group-values="countries"
-                            :group-select="true"
-                            :options="filterRegions"
-                            :multiple="true"
-                            :close-on-select="true"
-                            :hide-selected="true"
-                            :disabled="loading"
-                        >
-                            <span slot="noResult">No results found.</span>
-                        </multiselect>
-                    </label>
-                </div>
-
-                <div class="filter-item min-date">
-                    <label>
-                        {{ $t('filter.min_date') }}
-                        <input
-                            v-model="minDate"
-                            type="date"
-                            :min="today"
-                            :disabled="loading"
-                        />
-                    </label>
-                </div>
-                <div class="filter-item max-date">
-                    <label>
-                        {{ $t('filter.max_date') }}
-                        <input
-                            v-model="maxDate"
-                            type="date"
-                            :min="minDate || today"
-                            :disabled="loading"
-                        />
-                    </label>
-                </div>
-                <div class="filter-item min-date">
-                    <label>
-                        {{ $t('filter.min_days') }}
-                        <input
-                            v-model="minDays"
-                            type="number"
-                            min="1"
-                            :disabled="loading"
-                        />
-                    </label>
-                </div>
-                <div class="filter-item max-date">
-                    <label>
-                        {{ $t('filter.max_days') }}
-                        <input
-                            v-model="maxDays"
-                            type="number"
-                            :min="minDays || 1"
-                            :disabled="loading"
-                        />
-                    </label>
-                </div>
-                <div class="filter-item max-date">
-                    <label>
-                        {{ $t('valid_fide_elo') }}
-                        <select v-model="onlyValidByFIDEelo">
-                            <option value="">
-                                {{ $t('action.select_option') }}
-                            </option>
-                            <option value="0">{{ $t('action.no') }}</option>
-                            <option value="1">{{ $t('action.yes') }}</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="filter-item max-date">
-                    <label>
-                        {{ $t('filter.time_control') }}
-                        <select v-model="timeControlType">
-                            <option value="">
-                                {{ $t('action.select_option') }}
-                            </option>
-                            <option value="standard">
-                                {{ $t('standard') }}
-                            </option>
-                            <option value="rapid">{{ $t('rapid') }}</option>
-                            <option value="blitz">{{ $t('blitz') }}</option>
-                        </select>
-                    </label>
-                </div>
-
-                <div class="filter-item clean">
-                    <button
-                        class="navbar-filter clean"
-                        :disabled="emptyFilters || loading"
-                        @click="cleanFilters"
-                    >
-                        {{ $t('action.clean_filters') }}
-                    </button>
-                </div>
+                <select v-model="$i18n.locale">
+                    <option v-for="lang in langs" :key="lang" :value="lang">
+                        {{ $t(`language.${lang}`) }}
+                    </option>
+                </select>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
 import IconClose from './icons/IconClose'
 import IconMenu from './icons/IconMenu'
-import IconFilter from './icons/IconFilter'
 
 export default {
     components: {
         IconClose,
-        IconMenu,
-        IconFilter,
-        Multiselect
+        IconMenu
     },
     props: {
         loading: {
@@ -171,18 +38,13 @@ export default {
     },
     data() {
         return {
-            displayFilter: false,
-            searchInput: '',
-            minDate: '',
-            maxDate: '',
-            minDays: '',
-            maxDays: '',
-            onlyValidByFIDEelo: '',
-            timeControlType: '',
-            regions: []
+            displayMenu: false
         }
     },
     computed: {
+        langs() {
+            return ['en', 'es']
+        },
         today() {
             return new Date().toISOString().split('T')[0]
         },
@@ -354,76 +216,6 @@ export default {
                     ]
                 }
             ]
-        },
-        emptyFilters() {
-            return (
-                this.searchInput === '' &&
-                this.minDate === '' &&
-                this.maxDate === '' &&
-                this.minDays === '' &&
-                this.maxDays === '' &&
-                this.onlyValidByFIDEelo === '' &&
-                this.timeControlType === '' &&
-                this.regions.length === 0
-            )
-        }
-    },
-    watch: {
-        searchInput(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newInputValue', newValue)
-            }
-        },
-        minDate(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newMinDate', newValue)
-            }
-        },
-        maxDate(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newMaxDate', newValue)
-            }
-        },
-        minDays(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newMinDays', newValue)
-            }
-        },
-        maxDays(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newMaxDays', newValue)
-            }
-        },
-        onlyValidByFIDEelo(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newValidFIDE', newValue)
-            }
-        },
-        timeControlType(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                this.$emit('newTimeControlType', newValue)
-            }
-        },
-        regions(newValue, oldValue) {
-            const valueCodes = newValue.map((res) => res.code)
-            const valueCodesUniques = [...new Set(valueCodes)]
-
-            if (valueCodesUniques !== oldValue) {
-                this.$emit('newRegions', valueCodesUniques)
-            }
-        }
-    },
-    methods: {
-        cleanFilters() {
-            this.searchInput = ''
-            this.minDate = ''
-            this.maxDate = ''
-            this.minDays = ''
-            this.maxDays = ''
-            this.onlyValidByFIDEelo = ''
-            this.timeControlType = ''
-            this.regions = []
-            this.$emit('cleanFilters')
         }
     }
 }
@@ -456,6 +248,7 @@ export default {
     flex-grow: 1;
     margin: 4px 0;
     display: flex;
+    flex-direction: row-reverse;
 }
 
 .navbar-right.mobile {
@@ -464,134 +257,11 @@ export default {
     align-items: center;
 }
 
-.navbar-total {
-    width: 140px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.navbar-search {
-    flex-grow: 1;
-    padding-left: 12px;
-}
-
-.navbar-filter {
-    position: relative;
-    margin-left: 12px;
-    background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    padding: 4px 12px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    width: 60px;
-}
-.navbar-filter:hover:enabled {
-    border-color: var(--color-border-hover);
-}
-
-.navbar-filter.display {
-    padding: 0;
-}
-
-.navbar-filter.clean {
-    margin: 0;
-    width: 100%;
-    height: 32px;
-}
-
-.active-filter {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background: var(--color-info-dark);
-    border: 1px solid var(--color-info-light);
-    width: 12px;
-    height: 12px;
-    box-sizing: border-box;
-    border-radius: 100%;
-}
-
-.open-filter,
-.close-filter {
-    display: inline-flex;
-    align-content: center;
-    align-items: flex-end;
-    width: 24px;
-    padding: 2px;
-}
-
-.filter-header {
-    margin: 8px 0;
-    font-size: 1.2rem;
-}
-.tournaments-filter {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.filter-item {
-    display: inline-block;
-    margin: 8px 24px 8px 0;
-    color: var(--color-black-light);
-    width: 288px;
-}
-
-.filter-item.min-date,
-.filter-item.max-date,
-.filter-item.min-days,
-.filter-item.max-days {
-    width: 150px;
-}
-
-.filter-item.regions {
-    width: 100%;
-    margin-bottom: 0;
-}
-
-.filter-item input,
-.filter-item select,
-.multiselect {
-    display: block;
-    margin-top: 4px !important;
-    width: 100%;
-    cursor: pointer;
-    background-color: var(--color-white) !important;
-}
-
-input:hover,
-select:hover {
-    border-color: var(--color-border-hover) !important;
-}
-
-@media only screen and (max-width: 524px) {
-    .filter-item select,
-    .filter-item.clean {
-        width: 100% !important;
-    }
-}
-
-.filter-item.clean {
-    margin: 4px 0 0 0;
-    width: 120px;
-}
-
-@media only screen and (max-width: 768px) {
-    .filter-item.clean {
-        margin-top: 12px;
-    }
-}
-
 .icon-menu {
     position: relative;
     width: 24px;
     height: 24px;
     margin-right: 4px;
     cursor: pointer;
-}
-
-.search-menu {
-    width: 100%;
-    margin: 4px 0 8px 0;
 }
 </style>

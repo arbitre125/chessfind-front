@@ -126,7 +126,6 @@ export default {
     padding: 12px 16px 16px 16px;
     background-color: var(--color-white);
     border-radius: var(--border-radius);
-    min-height: 100px;
 }
 
 .tournament-card:hover {
@@ -173,15 +172,6 @@ export default {
 
 .tournament-city > a {
     color: var(--color-text-body);
-}
-
-.tournament-flag {
-    width: 18px;
-    height: 14px;
-    border-radius: 2px;
-    margin-right: 4px;
-    margin-bottom: -2px;
-    box-shadow: var(--shadow);
 }
 
 .tournament-dates {

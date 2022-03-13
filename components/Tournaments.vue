@@ -1,85 +1,88 @@
 <template>
     <div>
-        <Navbar
-            :loading="loading"
-            @newInputValue="updateInput"
-            @newMinDate="updateMinDate"
-            @newMaxDate="updateMaxDate"
-            @newMinDays="updateMinDays"
-            @newMaxDays="updateMaxDays"
-            @newRegions="updateRegions"
-            @newValidFIDE="updateValidFIDE"
-            @newTimeControlType="updateTimeControlType"
-            @cleanFilters="cleanFilters"
-        />
-        <div class="content-container">
-            <div v-if="loading">
-                <TournamentSkeletonCard class="header-info" />
-                <TournamentSkeletonCard v-for="i in displayPerPage" :key="i" />
+        <Navbar />
+        <div class="go-back">
+            <nuxt-link to="/">{{ $t('action.go_back') }}</nuxt-link>
+        </div>
+        <div class="content">
+            <div class="content-filters desktop">
+                <h2>{{ $t('filter.tournaments') }}</h2>
             </div>
-            <div v-else-if="error" class="message error">
-                <img src="@/assets/icons/error.svg" class="placeholder-icon" />
-                <h2>{{ $t('error.error_found') }}</h2>
-            </div>
-            <div v-else-if="!tournaments.length" class="message info">
-                <img
-                    src="@/assets/icons/no_data.svg"
-                    class="placeholder-icon"
-                />
-                <h2>{{ $t('error.no_result_found') }}</h2>
-            </div>
-            <div v-else>
-                <div class="header-info">
-                    <div class="header-results">
-                        <b>{{ totalTournaments }}</b>
-                        {{ $t('results').toLowerCase() }}
-                    </div>
-                    <div class="header-sorting">
-                        <div class="sorting">
-                            {{ $t('sort_by') }}
-                            <select v-model="sorting">
-                                <option
-                                    v-for="item in sortOptions"
-                                    :key="item.display"
-                                    :value="{
-                                        value: item.value,
-                                        dir_desc: item.desc
-                                    }"
-                                >
-                                    {{ item.display }}
-                                </option>
-                            </select>
+            <div class="content-tournaments">
+                <div v-if="loading">
+                    <TournamentSkeletonCard class="header-info" />
+                    <TournamentSkeletonCard
+                        v-for="i in displayPerPage"
+                        :key="i"
+                    />
+                </div>
+                <div v-else-if="error" class="message error">
+                    <img
+                        src="@/assets/icons/error.svg"
+                        class="placeholder-icon"
+                    />
+                    <h2>{{ $t('error.error_found') }}</h2>
+                </div>
+                <div v-else-if="!tournaments.length" class="message info">
+                    <img
+                        src="@/assets/icons/no_data.svg"
+                        class="placeholder-icon"
+                    />
+                    <h2>{{ $t('error.no_result_found') }}</h2>
+                </div>
+                <div v-else>
+                    <div class="header-info">
+                        <div class="header-results">
+                            <b>{{ totalTournaments }}</b>
+                            {{ $t('results').toLowerCase() }}
+                        </div>
+                        <div class="header-sorting">
+                            <div class="sorting">
+                                {{ $t('sort_by') }}
+                                <select v-model="sorting">
+                                    <option
+                                        v-for="item in sortOptions"
+                                        :key="item.display"
+                                        :value="{
+                                            value: item.value,
+                                            dir_desc: item.desc
+                                        }"
+                                    >
+                                        {{ item.display }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <TournamentCard
-                    v-for="tournament of tournaments"
-                    :key="tournament.link"
-                    :tournament="tournament"
-                />
-                <div class="pagination">
-                    <button
-                        class="pagination-btn"
-                        :disabled="currentPage == 1"
-                        @click="prevPage"
-                    >
-                        <img src="@/assets/icons/arrow_left.svg" />
-                    </button>
-                    <input
-                        v-model="currentPage"
-                        type="number"
-                        :min="1"
-                        :max="maxPages"
-                        @change="updatePage"
+                    <TournamentCard
+                        v-for="tournament of tournaments"
+                        :key="tournament.link"
+                        :tournament="tournament"
                     />
-                    / {{ maxPages }}
-                    <button
-                        class="pagination-btn"
-                        :disabled="currentPage == maxPages"
-                        @click="nextPage()"
-                    >
-                        <img src="@/assets/icons/arrow_right.svg" />
-                    </button>
+                    <div class="pagination">
+                        <button
+                            class="pagination-btn"
+                            :disabled="currentPage == 1"
+                            @click="prevPage"
+                        >
+                            <img src="@/assets/icons/arrow_left.svg" />
+                        </button>
+                        <input
+                            v-model="currentPage"
+                            type="number"
+                            :min="1"
+                            :max="maxPages"
+                            @change="updatePage"
+                        />
+                        / {{ maxPages }}
+                        <button
+                            class="pagination-btn"
+                            :disabled="currentPage == maxPages"
+                            @click="nextPage()"
+                        >
+                            <img src="@/assets/icons/arrow_right.svg" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,38 +245,6 @@ export default {
             this.currentPage = 1
             this.$fetch()
         },
-        updateInput(value) {
-            this.searchInput = value
-            this.updateValue()
-        },
-        updateMinDate(value) {
-            this.minDate = value
-            this.updateValue()
-        },
-        updateMaxDate(value) {
-            this.maxDate = value
-            this.updateValue()
-        },
-        updateMinDays(value) {
-            this.minDays = value
-            this.updateValue()
-        },
-        updateMaxDays(value) {
-            this.maxDays = value
-            this.updateValue()
-        },
-        updateRegions(value) {
-            this.regions = value
-            this.updateValue()
-        },
-        updateValidFIDE(value) {
-            this.onlyValidByFIDEelo = value
-            this.updateValue()
-        },
-        updateTimeControlType(value) {
-            this.timeControlType = value
-            this.updateValue()
-        },
         setParamsFromRouter() {
             this.sorting.value = this.$route.query.sort_value
                 ? this.$route.query.sort_value
@@ -327,7 +298,6 @@ export default {
 }
 
 .header-info {
-    margin-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -372,5 +342,27 @@ export default {
 .pagination input:hover {
     border-color: var(--color-border-hover);
     cursor: pointer;
+}
+
+.go-back {
+    width: 100%;
+    margin: 12px 4%;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+.content {
+    margin: 20px 4%;
+    display: flex;
+    gap: 32px;
+}
+.content-filters {
+    width: 400px;
+    border-radius: 8px;
+    padding: 4px 0;
+}
+
+.content-tournaments {
+    width: 100%;
 }
 </style>

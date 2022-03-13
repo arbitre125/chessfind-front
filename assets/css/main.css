@@ -17,6 +17,8 @@
 
     /* Colors */
     --color-primary: #2600C0;
+    --color-primary-dark: #180077;
+    --color-primary-light: #3300ff;
     --color-black-dark: #222222;
     --color-black-light: #666666;
     --color-grey-light: #cacaca;
@@ -112,4 +114,37 @@ a:hover {
 .error {
     background-color: #FFF2F9;
     color: #98014C
+}
+
+.tournament-flag {
+    width: 18px;
+    height: 14px;
+    border-radius: 2px;
+    margin-right: 4px;
+    margin-bottom: -2px;
+    box-shadow: var(--shadow);
+}
+
+button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    height: 36px;
+}
+
+button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+footer {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+label {
+    color: var(--color-black-light);
 }
