@@ -118,7 +118,7 @@ export default {
         this.loading = true
 
         await this.$axios
-            .post(this.$config.apiURL, this.getParams)
+            .post(this.$config.apiURL + '/tournaments', this.getParams)
             .then((response) => {
                 this.tournaments = response.data.tournaments
                 this.totalTournaments = response.data.total

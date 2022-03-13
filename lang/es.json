@@ -1,15 +1,14 @@
 {
     "title": "Encuentra torneos de ajedrez en todo el mundo",
-    "home": "Hogar",
+    "home": "Inicio",
     "tournaments": "Torneos",
     "results": "Resultados",
     "rounds": "Rondas",
-    "display": "Monitor",
     "sort_by": "Ordenar por",
-    "valid_fide_elo": "Válido para FIDE elo",
+    "valid_fide_elo": "Válido para elo FIDE",
     "average_elo": "Elo promedio",
     "min": "Min",
-    "sec": "Sec",
+    "sec": "Seg",
     "language": {
         "en": "Inglés",
         "es": "Español"

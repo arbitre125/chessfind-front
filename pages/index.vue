@@ -38,7 +38,7 @@
                     <label>
                         {{ $t('filter.time_control') }}
                         <select v-model="timeControlType">
-                            <option value="">
+                            <option value="" selected>
                                 {{ $t('action.select_option') }}
                             </option>
                             <option value="standard">
@@ -141,6 +141,14 @@
 
 <script>
 export default {
+    data() {
+        return {
+            searchInput: '',
+            minDate: '',
+            maxDate: '',
+            timeControlType: ''
+        }
+    },
     computed: {
         timeControls() {
             return ['standard', 'rapid', 'blitz', 'all']
@@ -149,9 +157,9 @@ export default {
             return [
                 { min: 90, sec: 30 },
                 { min: 3, sec: 2 },
-                { min: 90, sec: 30 },
-                { min: 3, sec: 2 },
-                { min: 90, sec: 30 }
+                { min: 15, sec: 5 },
+                { min: 10, sec: 0 },
+                { min: 40, sec: 0 }
             ]
         },
         continents() {
@@ -161,14 +169,14 @@ export default {
             return [
                 'esp',
                 'cat',
-                'ind',
-                'usa',
-                'uzb',
-                'aze',
+                'and',
+                'por',
                 'fra',
+                'ger',
                 'ita',
-                'per',
-                'rsa'
+                'eng',
+                'gre',
+                'sui'
             ]
         }
     }
