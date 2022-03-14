@@ -11,6 +11,7 @@
     "sec": "Seg",
     "minuts": "Minutos",
     "seconds": "Segundos",
+    "city": "Ciudad",
     "language": {
         "en": "Inglés",
         "es": "Español"
@@ -53,6 +54,19 @@
     },
     "footer": {
         "copyright": "© ChessFind. Todos los derechos reservados."
+    },
+    "cities": {
+        "barcelona": "Barcelona",
+        "madrid": "Madrid",
+        "girona": "Gerona",
+        "vienna": "Vienna",
+        "london": "London",
+        "reykjavik": "Reykjavík",
+        "new_york": "Nueva York",
+        "tel_aviv": "Tel Aviv",
+        "tbilisi": "Tbilisi",
+        "tokyo": "Tokyo",
+        "baki": "Bakú"
     },
     "region": {
         "af": "África",

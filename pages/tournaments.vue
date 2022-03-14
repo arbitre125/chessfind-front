@@ -62,7 +62,7 @@
                         />
                     </label>
                 </div>
-                <div class="filter">
+                <div class="filter time">
                     <label>
                         {{ $t('filter.min_date') }}
                         <input
@@ -72,8 +72,6 @@
                             :disabled="loading"
                         />
                     </label>
-                </div>
-                <div class="filter">
                     <label>
                         {{ $t('filter.max_date') }}
                         <input
@@ -84,7 +82,7 @@
                         />
                     </label>
                 </div>
-                <div class="filter">
+                <div class="filter time">
                     <label>
                         {{ $t('filter.min_days') }}
                         <input
@@ -95,8 +93,6 @@
                             :disabled="loading"
                         />
                     </label>
-                </div>
-                <div class="filter">
                     <label>
                         {{ $t('filter.max_days') }}
                         <input
@@ -121,6 +117,17 @@
                             <option value="0">{{ $t('action.no') }}</option>
                             <option value="1">{{ $t('action.yes') }}</option>
                         </select>
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('city') }}
+                        <input
+                            v-model="city"
+                            type="text"
+                            :placeholder="$t('cities.barcelona')"
+                            :disabled="loading"
+                        />
                     </label>
                 </div>
                 <div class="filter">
@@ -220,7 +227,7 @@
                         />
                     </label>
                 </div>
-                <div class="filter">
+                <div class="filter time">
                     <label>
                         {{ $t('filter.min_date') }}
                         <input
@@ -230,8 +237,6 @@
                             :disabled="loading"
                         />
                     </label>
-                </div>
-                <div class="filter">
                     <label>
                         {{ $t('filter.max_date') }}
                         <input
@@ -242,7 +247,7 @@
                         />
                     </label>
                 </div>
-                <div class="filter">
+                <div class="filter time">
                     <label>
                         {{ $t('filter.min_days') }}
                         <input
@@ -253,8 +258,6 @@
                             :disabled="loading"
                         />
                     </label>
-                </div>
-                <div class="filter">
                     <label>
                         {{ $t('filter.max_days') }}
                         <input
@@ -306,6 +309,17 @@
                                 >{{ $t('error.no_result_found') }}.</span
                             >
                         </multiselect>
+                    </label>
+                </div>
+                <div class="filter">
+                    <label>
+                        {{ $t('city') }}
+                        <input
+                            v-model="city"
+                            type="text"
+                            :placeholder="$t('cities.barcelona')"
+                            :disabled="loading"
+                        />
                     </label>
                 </div>
                 <div class="filter">
@@ -429,6 +443,7 @@ export default {
             timeControlType: '',
             timeControlMin: '',
             timeControlSec: '',
+            city: '',
             awaitingInput: false,
             displayMobileMenu: false
         }
@@ -678,6 +693,7 @@ export default {
             params.time_control_type = this.timeControlType
             params.time_control_min = this.timeControlMin
             params.time_control_sec = this.timeControlSec
+            params.city = this.city
 
             if (this.minDate !== '') {
                 params.min_date = this.formatDate(this.minDate)
@@ -705,6 +721,7 @@ export default {
                 this.timeControlType === '' &&
                 this.timeControlMin === '' &&
                 this.timeControlSec === '' &&
+                this.city === '' &&
                 this.displayRegions.length === 0
             )
         }
@@ -783,6 +800,15 @@ export default {
             const valueCodes = newValue.map((res) => res.code)
             this.regions = [...new Set(valueCodes)]
             this.updateValue()
+        },
+        city() {
+            if (!this.awaitingInput) {
+                setTimeout(() => {
+                    this.$fetch()
+                    this.awaitingInput = false
+                }, 1000) // 1 sec delay
+            }
+            this.awaitingInput = true
         }
     },
     methods: {
@@ -882,6 +908,13 @@ export default {
                 ]
                 this.$route.params.regions = ''
             }
+            if (
+                this.$route.params.city !== undefined &&
+                this.$route.params.city !== ''
+            ) {
+                this.city = this.$route.params.city
+                this.$route.params.city = ''
+            }
         },
         cleanFilters() {
             this.searchInput = ''
@@ -895,6 +928,7 @@ export default {
             this.timeControlSec = ''
             this.displayRegions = []
             this.regions = []
+            this.city = ''
             this.updateValue()
         },
         formatDate(date) {

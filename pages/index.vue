@@ -136,6 +136,39 @@
                     <span v-else>{{ $t('action.display_all') }}</span>
                 </button>
             </section>
+            <section class="time-control popular-time-control flex-grid">
+                <h2>{{ $t('play_in_fav.city') }}</h2>
+                <nuxt-link
+                    v-for="city in popularCities.slice(0, maxDisplayCities)"
+                    :key="city"
+                    :to="{
+                        name: 'tournaments',
+                        params: { city: city }
+                    }"
+                    class="col card-city"
+                >
+                    <h3>{{ $t(`cities.${city.replace(' ', '_')}`) }}</h3>
+                    <div class="layer"></div>
+                    <img
+                        :src="
+                            require(`@/assets/cities/${city.replace(
+                                ' ',
+                                '_'
+                            )}.png`)
+                        "
+                    />
+                </nuxt-link>
+                <button
+                    v-if="popularCities.length > 5"
+                    class="secondary-btn"
+                    @click="showAllCities = !showAllCities"
+                >
+                    <span v-if="showAllCities">{{
+                        $t('action.display_less')
+                    }}</span>
+                    <span v-else>{{ $t('action.display_all') }}</span>
+                </button>
+            </section>
         </div>
         <Footer />
     </div>
@@ -156,7 +189,8 @@ export default {
             timeControlType: '',
             timeControls: [],
             popularTimeControls: [],
-            popularRegions: []
+            popularRegions: [],
+            popularCities: []
         }
     },
     async fetch() {
@@ -166,6 +200,7 @@ export default {
                 this.assignTimeControlsTypes(response.data.time_control_types)
                 this.assignTimeControlsValues(response.data.time_control_values)
                 this.assignRegions(response.data.regions)
+                this.assignCities(response.data.cities)
             })
             .catch(() => {
                 this.error = true
@@ -182,20 +217,6 @@ export default {
         },
         maxDisplayRegions() {
             return this.showAllRegions ? this.popularRegions.length : 5
-        },
-        popularCities() {
-            return [
-                'barcelona',
-                'madrid',
-                'vienna',
-                'london',
-                'reykjavik',
-                'new york',
-                'tel aviv',
-                'tbilisi',
-                'tokyo',
-                'baki'
-            ]
         },
         maxDisplayCities() {
             return this.showAllCities ? this.popularCities.length : 5
@@ -229,6 +250,11 @@ export default {
                 if (this.isFedSupported(region[0])) {
                     this.popularRegions.push(region[0].toLowerCase())
                 }
+            }
+        },
+        assignCities(value) {
+            for (const city of value) {
+                this.popularCities.push(city[0].toLowerCase())
             }
         },
         searchTournaments() {
@@ -339,6 +365,26 @@ section.time-control {
     border-color: var(--color-primary);
 }
 
+.card-city {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-start;
+    min-width: 18%;
+    max-width: 20%;
+    height: 180px;
+    border: 1px solid rgba(38, 0, 192, 0.25);
+    color: var(--color-primary);
+    box-sizing: border-box;
+    border-radius: 8px;
+    text-decoration: none;
+    flex-grow: 1;
+}
+.card-city:hover {
+    border-color: var(--color-primary);
+}
+
 .popular-time-control {
     display: flex;
     align-items: center;
@@ -367,5 +413,30 @@ select {
 
 .secondary-btn {
     width: 100%;
+}
+
+.card-city h3 {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    border-radius: 8px;
+    padding-top: 12px;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.8) 20.31%,
+        rgba(255, 255, 255, 0.7) 23.7%,
+        rgba(255, 255, 255, 0) 50%
+    );
+}
+
+.card-city img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
 }
 </style>
