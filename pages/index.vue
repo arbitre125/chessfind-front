@@ -196,7 +196,7 @@ export default {
     components: { LandingSkeleton },
     data() {
         return {
-            loading: true,
+            loading: false,
             error: false,
             showAllTimeControls: false,
             showAllRegions: false,
@@ -221,7 +221,7 @@ export default {
                 this.assignTimeControlsValues(response.data.time_control_values)
                 this.assignRegions(response.data.regions)
                 this.assignCities(response.data.cities)
-                // this.loading = false
+                this.loading = false
             })
             .catch(() => {
                 this.loading = false
