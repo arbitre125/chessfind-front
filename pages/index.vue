@@ -1,7 +1,11 @@
 <template>
     <div>
         <Navbar :menu="false" />
-        <div class="content-container">
+        <div v-if="error" class="message error">
+            <img src="@/assets/icons/error.svg" class="placeholder-icon" />
+            <h2>{{ $t('error.error_found') }}</h2>
+        </div>
+        <div v-else class="content-container">
             <div class="hero">
                 <h1>{{ $t('title') }}</h1>
                 <div class="flex-grid search-box">
@@ -54,121 +58,131 @@
                     </div>
                 </div>
             </div>
-            <section class="time-control flex-grid">
-                <h2>{{ $t('play_in_fav.time_control') }}</h2>
-                <nuxt-link
-                    v-for="time in timeControls"
-                    :key="time.display"
-                    :to="{
-                        name: 'tournaments',
-                        params: { time_control_type: time.url }
-                    }"
-                    class="col card-time-control"
-                >
-                    <h3>{{ $t(`time_control.${time.display}`) }}</h3>
-                    <h6>{{ time.count }} {{ $t('results').toLowerCase() }}</h6>
-                </nuxt-link>
-            </section>
-            <section class="popular-time-control flex-grid">
-                <nuxt-link
-                    v-for="time in popularTimeControls.slice(
-                        0,
-                        maxDisplayTimeControls
-                    )"
-                    :key="time.min + ' ' + time.sec"
-                    :to="{
-                        name: 'tournaments',
-                        params: {
-                            time_control_min: time.min,
-                            time_control_sec: time.sec
-                        }
-                    }"
-                    class="col chip-time-control"
-                >
-                    {{
-                        time.min +
-                        ' ' +
-                        $t('min').toLowerCase() +
-                        ' + ' +
-                        time.sec +
-                        ' ' +
-                        $t('sec').toLowerCase()
-                    }}
-                </nuxt-link>
-                <button
-                    v-if="popularTimeControls.length > 5"
-                    class="secondary-btn"
-                    @click="showAllTimeControls = !showAllTimeControls"
-                >
-                    <span v-if="showAllTimeControls">{{
-                        $t('action.display_less')
-                    }}</span>
-                    <span v-else>{{ $t('action.display_all') }}</span>
-                </button>
-            </section>
-            <section class="time-control popular-time-control flex-grid">
-                <h2>{{ $t('play_in_fav.region') }}</h2>
-                <nuxt-link
-                    v-for="region in popularRegions.slice(0, maxDisplayRegions)"
-                    :key="region"
-                    :to="{
-                        name: 'tournaments',
-                        params: { regions: [region.toUpperCase()] }
-                    }"
-                    class="col chip-time-control"
-                >
-                    <img
-                        :src="
-                            require(`@/assets/flags/${region.toLowerCase()}.svg`)
-                        "
-                        class="tournament-flag"
-                    />
-                    {{ $t(`region.${region}`) }}
-                </nuxt-link>
-                <button
-                    v-if="popularRegions.length > 5"
-                    class="secondary-btn"
-                    @click="showAllRegions = !showAllRegions"
-                >
-                    <span v-if="showAllRegions">{{
-                        $t('action.display_less')
-                    }}</span>
-                    <span v-else>{{ $t('action.display_all') }}</span>
-                </button>
-            </section>
-            <section class="time-control popular-time-control flex-grid">
-                <h2>{{ $t('play_in_fav.city') }}</h2>
-                <nuxt-link
-                    v-for="city in popularCities.slice(0, maxDisplayCities)"
-                    :key="city"
-                    :to="{
-                        name: 'tournaments',
-                        params: { city: city }
-                    }"
-                    class="col card-city"
-                >
-                    <h3>{{ $t(`cities.${city.replace(' ', '_')}`) }}</h3>
-                    <div class="layer"></div>
-                    <img
-                        :src="
-                            require(`@/assets/cities/${city.replace(
-                                ' ',
-                                '_'
-                            )}.png`)
-                        "
-                    />
-                </nuxt-link>
-                <button
-                    v-if="popularCities.length > 5"
-                    class="secondary-btn"
-                    @click="showAllCities = !showAllCities"
-                >
-                    <span v-if="showAllCities">{{
-                        $t('action.display_less')
-                    }}</span>
-                    <span v-else>{{ $t('action.display_all') }}</span>
-                </button>
-            </section>
+            <div v-if="loading">
+                <LandingSkeleton />
+            </div>
+            <div v-else class="landing-content">
+                <section class="time-control flex-grid">
+                    <h2>{{ $t('play_in_fav.time_control') }}</h2>
+                    <nuxt-link
+                        v-for="time in timeControls"
+                        :key="time.display"
+                        :to="{
+                            name: 'tournaments',
+                            params: { time_control_type: time.url }
+                        }"
+                        class="col card-time-control"
+                    >
+                        <h3>{{ $t(`time_control.${time.display}`) }}</h3>
+                        <h6>
+                            {{ time.count }} {{ $t('results').toLowerCase() }}
+                        </h6>
+                    </nuxt-link>
+                </section>
+                <section class="popular-time-control flex-grid">
+                    <nuxt-link
+                        v-for="time in popularTimeControls.slice(
+                            0,
+                            maxDisplayTimeControls
+                        )"
+                        :key="time.min + ' ' + time.sec"
+                        :to="{
+                            name: 'tournaments',
+                            params: {
+                                time_control_min: time.min,
+                                time_control_sec: time.sec
+                            }
+                        }"
+                        class="col chip-time-control"
+                    >
+                        {{
+                            time.min +
+                            ' ' +
+                            $t('min').toLowerCase() +
+                            ' + ' +
+                            time.sec +
+                            ' ' +
+                            $t('sec').toLowerCase()
+                        }}
+                    </nuxt-link>
+                    <button
+                        v-if="popularTimeControls.length > 5"
+                        class="secondary-btn"
+                        @click="showAllTimeControls = !showAllTimeControls"
+                    >
+                        <span v-if="showAllTimeControls">{{
+                            $t('action.display_less')
+                        }}</span>
+                        <span v-else>{{ $t('action.display_all') }}</span>
+                    </button>
+                </section>
+                <section class="time-control popular-time-control flex-grid">
+                    <h2>{{ $t('play_in_fav.region') }}</h2>
+                    <nuxt-link
+                        v-for="region in popularRegions.slice(
+                            0,
+                            maxDisplayRegions
+                        )"
+                        :key="region"
+                        :to="{
+                            name: 'tournaments',
+                            params: { regions: [region.toUpperCase()] }
+                        }"
+                        class="col chip-time-control"
+                    >
+                        <img
+                            :src="
+                                require(`@/assets/flags/${region.toLowerCase()}.svg`)
+                            "
+                            class="tournament-flag"
+                        />
+                        {{ $t(`region.${region}`) }}
+                    </nuxt-link>
+                    <button
+                        v-if="popularRegions.length > 5"
+                        class="secondary-btn"
+                        @click="showAllRegions = !showAllRegions"
+                    >
+                        <span v-if="showAllRegions">{{
+                            $t('action.display_less')
+                        }}</span>
+                        <span v-else>{{ $t('action.display_all') }}</span>
+                    </button>
+                </section>
+                <section class="time-control popular-time-control flex-grid">
+                    <h2>{{ $t('play_in_fav.city') }}</h2>
+                    <nuxt-link
+                        v-for="city in popularCities.slice(0, maxDisplayCities)"
+                        :key="city"
+                        :to="{
+                            name: 'tournaments',
+                            params: { city: city }
+                        }"
+                        class="col card-city"
+                    >
+                        <h3>{{ $t(`cities.${city.replace(' ', '_')}`) }}</h3>
+                        <div class="layer"></div>
+                        <img
+                            :src="
+                                require(`@/assets/cities/${city.replace(
+                                    ' ',
+                                    '_'
+                                )}.png`)
+                            "
+                        />
+                    </nuxt-link>
+                    <button
+                        v-if="popularCities.length > 5"
+                        class="secondary-btn"
+                        @click="showAllCities = !showAllCities"
+                    >
+                        <span v-if="showAllCities">{{
+                            $t('action.display_less')
+                        }}</span>
+                        <span v-else>{{ $t('action.display_all') }}</span>
+                    </button>
+                </section>
+            </div>
         </div>
         <Footer />
     </div>
@@ -176,10 +190,14 @@
 
 <script>
 import { getCountries } from '../utils/filters'
+import LandingSkeleton from '../components/LandingSkelete.vue'
 
 export default {
+    components: { LandingSkeleton },
     data() {
         return {
+            loading: true,
+            error: false,
             showAllTimeControls: false,
             showAllRegions: false,
             showAllCities: false,
@@ -194,6 +212,8 @@ export default {
         }
     },
     async fetch() {
+        this.loading = true
+
         await this.$axios
             .post(this.$config.apiURL + '/', this.getParams)
             .then((response) => {
@@ -201,8 +221,10 @@ export default {
                 this.assignTimeControlsValues(response.data.time_control_values)
                 this.assignRegions(response.data.regions)
                 this.assignCities(response.data.cities)
+                // this.loading = false
             })
             .catch(() => {
+                this.loading = false
                 this.error = true
             })
     },
