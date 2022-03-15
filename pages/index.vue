@@ -407,6 +407,14 @@ section.time-control {
     border-color: var(--color-primary);
 }
 
+@media only screen and (max-width: 768px) {
+    .card-city {
+        min-width: 48%;
+        max-width: 48%;
+        height: 75%;
+    }
+}
+
 .popular-time-control {
     display: flex;
     align-items: center;
