@@ -1,6 +1,7 @@
 <template>
     <div>
         <Navbar :menu="false" />
+
         <div v-if="error" class="message error">
             <img src="@/assets/icons/error.svg" class="placeholder-icon" />
             <h2>{{ $t('error.error_found') }}</h2>
@@ -184,6 +185,7 @@
                 </section>
             </div>
         </div>
+        
         <Footer />
     </div>
 </template>

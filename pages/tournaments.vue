@@ -1,6 +1,7 @@
 <template>
     <div>
         <Navbar @displayMenu="displayMenu" />
+
         <div class="content">
             <div class="content-filters desktop">
                 <div class="mobile langs">
@@ -410,6 +411,8 @@
                 </div>
             </div>
         </div>
+
+        <Footer />
     </div>
 </template>
 
