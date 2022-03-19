@@ -1034,11 +1034,11 @@ h2 {
         position: absolute;
         top: 60px;
         background-color: var(--color-background);
-        height: 100vh;
+        min-height: 100vh;
         width: 96%;
         padding-right: 4%;
         border-radius: 0;
-        padding-bottom: 20px;
+        padding-bottom: 40px;
     }
 }
 
