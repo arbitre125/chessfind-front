@@ -1,4 +1,11 @@
-# chessfind-front
+# ChessFind frontend
+
+ChessFind [chessfind.vercel.app](https://chessfind.vercel.app/) website is here to solve the problem of finding chess tournaments around the world. We are open to any feature request and help building it.
+
+<p align="center">
+<img src="assets/images/chessfind_preview_home.png" alt="ChessFind home">
+<img src="assets/images/chessfind_preview_list.png" alt="ChessFind tournaments list">
+</p>
 
 ## Build Setup
 
