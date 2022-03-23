@@ -4,7 +4,7 @@
             {{ new Date().getFullYear() }}
             {{ $t('footer.copyright') }}
             |<a
-                href="https://github.com/eduayme/chessfind-front/issues/new?assignees=&labels=bug%2C+help+wanted&template=bug_report.md&title=%5BBUG%5D+Name+of+the+bug"
+                href="https://github.com/eduayme/chessfind-front/issues/new?assignees=&labels=enhancement%2C+help+wanted&template=feature_request.md&title=%5BFEATURE%5D+Name+of+the+feature"
                 target="_blank"
                 >Request a feature</a
             >|<a
